@@ -35,7 +35,29 @@
                 </p>
             </section>
         </aside>
+        <?php
+        $enCoursDeTraitement = isset($_POST['text']);
+        if ($enCoursDeTraitement) {
+            $newContent = $_POST['text'];
+
+            $lInstructionSql = "INSERT INTO users (id, email, password, alias) "
+                . "VALUES (NULL, "
+                . "'" . $new_email . "', "
+                . "'" . $new_passwd . "', "
+                . "'" . $new_alias . "'"
+                . ");";
+
+
+        }
+        ?>
         <main>
+            <form method="post" action="wall.php?user_id=<?php echo $_SESSION['connected_id'] ?>">
+                <textarea name="text" id="" cols="30" rows="10">
+
+                </textarea>
+                <input type="submit">
+            </form>
+
             <?php
             /**
              * Etape 3: récupérer tous les messages de l'utilisatrice
