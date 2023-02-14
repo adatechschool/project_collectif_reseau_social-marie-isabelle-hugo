@@ -35,21 +35,7 @@
                 </p>
             </section>
         </aside>
-        <?php
-        $enCoursDeTraitement = isset($_POST['text']);
-        if ($enCoursDeTraitement) {
-            $newContent = $_POST['text'];
-
-            $lInstructionSql = "INSERT INTO users (id, email, password, alias) "
-                . "VALUES (NULL, "
-                . "'" . $new_email . "', "
-                . "'" . $new_passwd . "', "
-                . "'" . $new_alias . "'"
-                . ");";
-
-
-        }
-        ?>
+       
         <main>
             <?php
             if (intval($userId) === intval($_SESSION['connected_id'])){
