@@ -35,6 +35,21 @@
                 </p>
             </section>
         </aside>
+        <?php
+        $enCoursDeTraitement = isset($_POST['text']);
+        if ($enCoursDeTraitement) {
+            $newContent = $_POST['text'];
+
+            $lInstructionSql = "INSERT INTO users (id, email, password, alias) "
+                . "VALUES (NULL, "
+                . "'" . $new_email . "', "
+                . "'" . $new_passwd . "', "
+                . "'" . $new_alias . "'"
+                . ");";
+
+
+        }
+        ?>
         <main>
             <?php
             if (intval($userId) === intval($_SESSION['connected_id'])){
@@ -48,22 +63,22 @@
             <?php }
                 $enCoursDeTraitement = isset($_POST['new_post']);
 
-                // récupérer la date
-                date_default_timezone_set('Europe/Paris');
-                $postDate = date('Y-m-d H:i:s');
+            // récupérer la date
+            date_default_timezone_set('Europe/Paris');
+            $postDate = date('Y-m-d H:i:s');
 
-                    if ($enCoursDeTraitement) {
-                        $newPost = $_POST['new_post'];
+            if ($enCoursDeTraitement) {
+                $newPost = $_POST['new_post'];
 
-                        $lInstructionSql = "INSERT INTO posts (id, user_id, content, created) 
+                $lInstructionSql = "INSERT INTO posts (id, user_id, content, created) 
                         VALUES (NULL, '$userId', '$newPost', '$postDate');";
 
-                    // Etape 6: exécution de la requete
-                    $ok = $mysqli->query($lInstructionSql);
-                    if (!$ok) {
-                        echo "Le post n'a pas été enregistré, veuillez recommencez." . $mysqli->error;
-                    }
-                    }
+                // Etape 6: exécution de la requete
+                $ok = $mysqli->query($lInstructionSql);
+                if (!$ok) {
+                    echo "Le post n'a pas été enregistré, veuillez recommencez." . $mysqli->error;
+                }
+            }
 
 
             ?>
