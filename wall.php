@@ -36,15 +36,17 @@
             </section>
         </aside>
         <main>
-
-            <form method="post" action="wall.php?user_id=<?php echo $_SESSION['connected_id'] ?>">
-                <p>Que souhaitez-vous partager ?</label><br />
-                    <textarea name="new_post" id="new_post" cols="100" rows="6" wrap="hard"></textarea>
-                    <input type='submit'>
-                </p>
-            </form>
-
-            <?php $enCoursDeTraitement = isset($_POST['new_post']);
+            <?php
+            if (intval($userId) === intval($_SESSION['connected_id'])){
+            ?>
+                <form method="post" action="wall.php?user_id=<?php echo $_SESSION['connected_id'] ?>">
+                    <p>Que souhaitez-vous partager ?</label><br />
+                        <textarea name="new_post" id="new_post" cols="100" rows="6" wrap="hard"></textarea>
+                        <input type='submit'>
+                    </p>
+                </form>
+            <?php }
+                $enCoursDeTraitement = isset($_POST['new_post']);
 
                 // récupérer la date
                 date_default_timezone_set('Europe/Paris');
