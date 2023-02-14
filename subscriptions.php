@@ -18,15 +18,17 @@
             <img src="images/user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
                 <?php
+                // Etape 1: récupérer l'id de l'utilisateur
                 $userId = intval($_GET['user_id']);
-                $laQuestionEnSql2 = "SELECT alias FROM users WHERE users.id = $userId";
-                $lesInformations2 = $mysqli->query($laQuestionEnSql2);
-                $name = $lesInformations2->fetch_assoc();
+                // Etape 2: récupérer le nom de l'utilisateur
+                $getID = "SELECT alias FROM users WHERE users.id LIKE '$userId' ";
+                $setID = $mysqli->query($getID);
+                $authorID = $setID->fetch_assoc();
                 ?>
                 <h3>Présentation</h3>
-                <p>Sur cette page vous trouverez la liste des personnes
-                    que l'utilisatrice
-                    <?php echo $name['alias'] ?>
+                <p>Sur cette page vous trouverez la liste des personnes que
+                    l'utilisatrice
+                    <?php echo $authorID['alias'] ?>
                     suit
                 </p>
             </section>
@@ -34,7 +36,7 @@
         <main class='contacts'>
             <?php
             // Etape 1: récupérer l'id de l'utilisateur
-            $userId = intval($_GET['user_id']);
+            // $userId = intval($_GET['user_id']);
             // Etape 3: récupérer le nom de l'utilisateur
             $laQuestionEnSql = "
                     SELECT users.* 
@@ -49,9 +51,12 @@
                 ?>
                 <article>
                     <img src="images/user.jpg" alt="blason" />
-                    <h3>
-                        <?php echo $post['alias']; ?>
-                    </h3>
+
+                    <a href="wall.php?user_id=<?php echo $post['id']; ?>">
+                        <h3>
+                            <?php echo $post['alias']; ?>
+                        </h3>
+                    </a>
                     <p>
                         id :
                         <?php echo $post['id']; ?>

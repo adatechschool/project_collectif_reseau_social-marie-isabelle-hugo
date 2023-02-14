@@ -73,18 +73,20 @@
             while ($tag = $lesInformations->fetch_assoc()) {
                 ?>
                 <article>
-                    <h3>
-                        <?php echo $tag['alias']; ?>
-                    </h3>
+                    <a href="wall.php?user_id=<?php echo $tag['id']; ?>">
+                        <h3>
+                            <?php echo $tag['alias']; ?>
+                        </h3>
+                    </a>
                     <p>
                         <?php echo $tag['id']; ?>
                     </p>
                     <nav>
-                        <a href="wall.php?user_<?php echo $tag['id']; ?>">Mur</a>
-                        | <a href="feed.php?user_<?php echo $tag['id']; ?>">Flux</a>
-                        | <a href="settings.php?user_<?php echo $tag['id']; ?>">Paramètres</a>
-                        | <a href="followers.php?user_<?php echo $tag['id']; ?>">Suiveurs</a>
-                        | <a href="subscriptions.php?user_<?php echo $tag['id']; ?>">Abonnements</a>
+                        <a href="wall.php?user_id=<?php echo $tag['id']; ?>">Mur</a>
+                        | <a href="feed.php?user_id=<?php echo $tag['id']; ?>">Flux</a>
+                        | <a href="settings.php?user_id=<?php echo $tag['id']; ?>">Paramètres</a>
+                        | <a href="followers.php?user_id=<?php echo $tag['id']; ?>">Suiveurs</a>
+                        | <a href="subscriptions.php?user_id=<?php echo $tag['id']; ?>">Abonnements</a>
                     </nav>
                 </article>
             <?php } ?>

@@ -84,9 +84,8 @@
                             <?php echo $post['created']; ?>
                         </time>
                     </h3>
-
                     <a href="wall.php?user_id=<?php echo $post['id_num'] ?>">
-                        <address>par
+                        <address>Par
                             <?php echo $post['author_name']; ?>
                         </address>
                     </a>
