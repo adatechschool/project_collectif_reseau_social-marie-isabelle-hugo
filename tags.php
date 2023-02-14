@@ -10,7 +10,7 @@
 
 <body>
     <?php
-    include('header.html');
+    include('header.php');
     include('connect.php');
     ?>
     <div id="wrapper">
@@ -83,9 +83,9 @@
                         </time>
                     </h3>
                     <a href="wall.php?user_id=<?php echo $post['id_num'] ?>">
-                    <address>Par
-                        <?php echo $post['author_name']; ?>
-                    </address>
+                        <address>Par
+                            <?php echo $post['author_name']; ?>
+                        </address>
                     </a>
                     <div>
                         <p>

@@ -1,6 +1,3 @@
-<?php
-session_start();
-?>
 <!doctype html>
 <html lang="fr">
 
@@ -13,7 +10,7 @@ session_start();
 
 <body>
     <?php
-    include('header.html');
+    include('header.php');
     include('connect.php');
     ?>
 
@@ -63,6 +60,7 @@ session_start();
                 }
                 ?>
                 <form action="login.php" method="post">
+                    <input type="hidden" name="???" value="achanger">
                     <dl>
                         <dt><label for='email'>E-Mail</label></dt>
                         <dd><input type='email' name='email'></dd>

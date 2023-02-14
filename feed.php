@@ -10,7 +10,7 @@
 
 <body>
     <?php
-    include('header.html');
+    include('header.php');
     ?>
     <div id="wrapper">
         <?php
