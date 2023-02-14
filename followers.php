@@ -17,19 +17,23 @@
         <aside>
             <img src="images/user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
+                <?php
+                $userId = intval($_GET['user_id']);
+                $laQuestionEnSql2 = "SELECT alias FROM users WHERE users.id = $userId";
+                $lesInformations2 = $mysqli->query($laQuestionEnSql2);
+                $name = $lesInformations2->fetch_assoc();
+                ?>
                 <h3>Présentation</h3>
                 <p>Sur cette page vous trouverez la liste des personnes qui
                     suivent les messages de l'utilisatrice
-                    n°
-                    <?php echo intval($_GET['user_id']) ?>
+                    <?php echo $name['alias'] ?>
                 </p>
-
             </section>
         </aside>
         <main class='contacts'>
             <?php
             // Etape 1: récupérer l'id de l'utilisateur
-            $userId = intval($_GET['user_id']);
+            
             // Etape 3: récupérer le nom de l'utilisateur
             $laQuestionEnSql = "
                     SELECT users.*

@@ -41,7 +41,7 @@
              * Etape 3: récupérer tous les messages de l'utilisatrice
              */
             $laQuestionEnSql = "
-                    SELECT posts.content, posts.created, users.alias as author_name, 
+                    SELECT posts.content, posts.created, users.alias as author_name, users.id as id_num,
                     COUNT(likes.id) as like_number, GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id
@@ -57,9 +57,6 @@
                 echo ("Échec de la requete : " . $mysqli->error);
             }
 
-            /**
-             * Etape 4: @todo Parcourir les messsages et remplir correctement le HTML avec les bonnes valeurs php
-             */
             while ($post = $lesInformations->fetch_assoc()) {
                 ?>
                 <article>
@@ -69,7 +66,7 @@
                         </time>
                     </h3>
                     <address>Par
-                        <?php echo $post['author_name']; ?>
+                        <a href="wall.php?user_id=<?php echo $post['id_num'] ?>"><?php echo $post['author_name']; ?></a>
                     </address>
                     <div>
                         <p>
