@@ -37,6 +37,7 @@
         </aside>
        
         <main>
+            <!-- Si le mur est celui de l'utilisatrice : possibilité de poster un statut -->
             <?php
             if (intval($userId) === intval($_SESSION['connected_id'])){
             ?>
@@ -46,7 +47,7 @@
                         <input type='submit'>
                     </p>
                 </form>
-            <?php }
+            <?php 
                 $enCoursDeTraitement = isset($_POST['new_post']);
 
             // récupérer la date
@@ -65,11 +66,61 @@
                     echo "Le post n'a pas été enregistré, veuillez recommencez." . $mysqli->error;
                 }
             }
+            // Si le mur est celui d'une autre utilisatrice, possibilité de la suivre/ne plus la suivre
+        } else {
+            $followingUser = $_SESSION['connected_id'];
 
+            $laQuestionEnSql = "SELECT * FROM followers WHERE following_user_id= '$followingUser' AND followed_user_id = '$userId' ";
+            $lesInformations = $mysqli->query($laQuestionEnSql);
+            $isFollowed = $lesInformations->fetch_assoc();
 
+            // Si l'utilistratice est déjà suivie, possibilité de ne plus suivre
+            if($isFollowed) {
+                ?>
+                <p> Vous suivez cette utilisatrice </p>
+                <form method="post" action="wall.php?user_id=<?php echo $userId ?>">
+                             <input type='submit' name='unsubscribe' value='Ne plus suivre cette utilisatrice'>
+                 </form>
+             
+             <?php 
+                 if(isset($_POST['unsubscribe'])) {
+                     $lInstructionSql = "DELETE FROM followers WHERE following_user_id = '$followingUser' AND followed_user_id = '$userId' ";
+                    
+                 // Etape 6: exécution de la requete
+                 $ok = $mysqli->query($lInstructionSql);
+                 if (!$ok) {
+                     ?> <p> Erreur, veuillez recommencez. <?php echo $mysqli->error; ?> </p>
+                     <?php 
+                     } else {
+                        ?> <p> Vous ne suivez plus cette utilisatrice </p>
+                    
+                    <?php }
+
+                 }
+
+            } else {
+            // Si utilisatrice non suivie, bouton "suivre"
             ?>
+           <form method="post" action="wall.php?user_id=<?php echo $userId ?>">
+                        <input type='submit' name='subscribe' value='Suivre cette utilisatrice'>
+            </form>
+        
+        <?php 
+            if(isset($_POST['subscribe'])) {
+                $lInstructionSql = "INSERT INTO followers (id, followed_user_id, following_user_id) 
+                VALUES (NULL, '$userId', '$followingUser');";
 
-            <?php
+            // Etape 6: exécution de la requete
+            $ok = $mysqli->query($lInstructionSql);
+            if (!$ok) {
+                ?> <p> Erreur, veuillez recommencez. <?php echo $mysqli->error; ?> </p>
+                <?php 
+                }
+            } 
+            }
+        }
+
+            
             /**
              * Etape 3: récupérer tous les messages de l'utilisatrice
              */
