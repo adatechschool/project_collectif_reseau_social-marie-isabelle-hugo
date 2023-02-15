@@ -1,3 +1,6 @@
+<?php
+    include('connect.php');
+?>
 <!doctype html>
 <html lang="fr">
 
@@ -11,7 +14,6 @@
 <body>
     <?php
     include('header.php');
-    include('connect.php');
     ?>
 
     <?php
