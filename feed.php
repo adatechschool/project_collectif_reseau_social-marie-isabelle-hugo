@@ -1,3 +1,6 @@
+<?php
+    include('connect.php');
+?>
 <!doctype html>
 <html lang="fr">
 
