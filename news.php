@@ -1,5 +1,6 @@
 <?php
-    include('connect.php');
+include('connect.php');
+$connectedUser = $_SESSION['connected_id'];
 ?>
 
 <!doctype html>
@@ -30,17 +31,6 @@
         <main>
 
             <?php
-            /*
-            // C'est ici que le travail PHP commence
-            // Votre mission si vous l'acceptez est de chercher dans la base
-            // de données la liste des 5 derniers messsages (posts) et
-            // de l'afficher
-            // Documentation : les exemples https://www.php.net/manual/fr/mysqli.query.php
-            // plus généralement : https://www.php.net/manual/fr/mysqli.query.php
-            */
-
-
-            //verification
             if ($mysqli->connect_errno) {
                 echo "<article>";
                 echo ("Échec de la connexion : " . $mysqli->connect_error);
@@ -49,14 +39,12 @@
                 exit();
             }
 
-            // Etape 2: Poser une question à la base de donnée et récupérer ses informations
-            // cette requete vous est donnée, elle est complexe mais correcte, 
-            // si vous ne la comprenez pas c'est normal, passez, on y reviendra
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
                     users.alias as author_name, 
                     users.id as id_num, 
+                    posts.id as id_post,
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
@@ -69,6 +57,7 @@
                     LIMIT 5
                     ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
+
             // Vérification
             if (!$lesInformations) {
                 echo "<article>";
@@ -77,9 +66,8 @@
                 exit();
             }
 
-            // Etape 3: Parcourir ces données et les ranger bien comme il faut dans du html
-            // NB: à chaque tour du while, la variable post ci dessous reçois les informations du post suivant.
             while ($post = $lesInformations->fetch_assoc()) {
+
 
                 ?>
                 <article>
@@ -97,26 +85,35 @@
                         </p>
                     </div>
                     <footer>
-                        <small>♥
-                            <?php echo $post['like_number'] ?>
-                        </small>
                         <?php
-                        $tagArray = explode(',', $post['taglist']);
-                        $i = 0;
-                        while ($i < count($tagArray)) {
-                            ?>
-                            <a href="">#
-                                <?php echo $tagArray[$i]; ?>
-                            </a>
-                            <?php $i++;
+                        include("likes.php");
+                        if (!$liked) { ?>
+                            <form method="post" action='news.php?user_id=<?php echo $_SESSION['connected_id']; ?>'>
+                                <input type="submit" name=<?php echo $postId ?> value="♥ <?php
+                                    echo $post['like_number']; ?>">
+                            </form>
+                        <?php
+                        } else { ?>
+                            <small>♥
+                                <?php echo $post['like_number']; ?>
+                            </small>
+                        <?php } ?>
+                        <?php if ($post['taglist']) {
+                            $tagArray = explode(',', $post['taglist']);
+                            $i = 0;
+                            while ($i < count($tagArray)) {
+                                ?>
+                                <a href="">#
+                                    <?php echo $tagArray[$i]; ?>
+                                </a>
+                                <?php $i++;
+                            }
+
                         } ?>
+
                     </footer>
                 </article>
-            <?php
-                // avec le <?php ci-dessus on retourne en mode php 
-            } // cette accolade ferme et termine la boucle while ouverte avant.
-            ?>
-
+            <?php } ?>
         </main>
     </div>
 </body>

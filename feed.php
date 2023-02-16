@@ -1,5 +1,5 @@
 <?php
-    include('connect.php');
+include('connect.php');
 ?>
 <!doctype html>
 <html lang="fr">
@@ -98,9 +98,16 @@
                         </p>
                     </div>
                     <footer>
-                        <small>♥
-                            <?php echo $post['like_number']; ?>
-                        </small>
+                        <?php if (!$like) { ?>
+                            <form method="post" action='feed.php?user_id=<?php echo $_SESSION['connected_user']; ?>'>
+                                <input type="submit" name="likeButton" value="♥ <?php
+                                echo $post['like_number']; ?>">
+                            </form>
+                        <?php } else { ?>
+                            <small>♥
+                                <?php echo $post['like_number']; ?>
+                            </small>
+                        <?php } ?>
 
                         <?php
                         $tagArray = explode(',', $post['taglist']);
