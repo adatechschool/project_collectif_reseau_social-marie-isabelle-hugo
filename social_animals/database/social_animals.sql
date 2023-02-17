@@ -22,7 +22,7 @@ SET time_zone = "+00:00";
 --
 
 -- --------------------------------------------------------
-CREATE DATABASE social_animals;
+
 --
 -- Structure de la table `events`
 --
