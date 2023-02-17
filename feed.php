@@ -104,6 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </small>
                         <?php } ?>
                         <?php
+                        if (isset($post['taglist'])) {
                         $tagArray = explode(',', $post['taglist']);
                         $i = 0;
                         while ($i < count($tagArray)) {
@@ -118,7 +119,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php echo $tag; ?>
                             </a>
                             <?php $i++;
-                        } ?>
+                        } } ?>
                     </footer>
                 </article>
             <?php

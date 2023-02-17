@@ -17,9 +17,6 @@
             <a href="news.php?user_id=<?php echo $_SESSION['connected_id'] ?>">Actualités</a>
             <a href="wall.php?user_id=<?php echo $_SESSION['connected_id'] ?>">Mur</a>
             <a href="feed.php?user_id=<?php echo $_SESSION['connected_id'] ?>">Flux</a>
-            <?php if (isset($_SESSION['id_tag'])) { ?>
-                <a href="tags.php?tag_id=<?php echo $_SESSION['id_tag'] ?>">Mots-clés</a>
-            <?php } ?>
 
         </nav>
         <nav id="user">

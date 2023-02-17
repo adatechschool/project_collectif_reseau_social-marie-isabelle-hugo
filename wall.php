@@ -3,7 +3,7 @@ include('connect.php');
 $userId = intval($_GET['user_id']);
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId == $connectedUser) {
     header('Location: wall.php?user_id=' . $_SESSION['connected_id']);
-} else {
+} else if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId != $connectedUser) {
     header('Location: wall.php?user_id=' . $userId);
 }
 
@@ -191,9 +191,23 @@ if (intval($userId) === intval($connectedUser)) {
                                 <?php echo $post['like_number']; ?>
                             </small>
                         <?php } ?>
-                        <a href="">
-                            <?php echo $post['taglist'] ?>
-                        </a>
+                        <?php
+                        if (isset($post['taglist'])) {
+                        $tagArray = explode(',', $post['taglist']);
+                        $i = 0;
+                        while ($i < count($tagArray)) {
+                            $tag = $tagArray[$i];
+                            $tagRequest = "SELECT tags.id as id_tag from tags WHERE tags.label = '$tag'";
+                            $infoTag = $mysqli->query($tagRequest);
+                            $infoTag = $infoTag->fetch_assoc();
+                            $tagId = $infoTag['id_tag'];
+                            $_SESSION['id_tag'] = $tagId;
+                            ?>
+                            <a href="tags.php?tag_id=<?php echo $_SESSION['id_tag'] ?>">#
+                                <?php echo $tag; ?>
+                            </a>
+                            <?php $i++;
+                        } } ?>
                     </footer>
                 </article>
             <?php } ?>

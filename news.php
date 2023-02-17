@@ -100,18 +100,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <?php echo $post['like_number']; ?>
                             </small>
                         <?php } ?>
-                        <?php if ($post['taglist']) {
-                            $tagArray = explode(',', $post['taglist']);
-                            $i = 0;
-                            while ($i < count($tagArray)) {
-                                ?>
-                                <a href="">#
-                                    <?php echo $tagArray[$i]; ?>
-                                </a>
-                                <?php $i++;
-                            }
-
-                        } ?>
+                        <?php
+                        if (isset($post['taglist'])) {
+                        $tagArray = explode(',', $post['taglist']);
+                        $i = 0;
+                        while ($i < count($tagArray)) {
+                            $tag = $tagArray[$i];
+                            $tagRequest = "SELECT tags.id as id_tag from tags WHERE tags.label = '$tag'";
+                            $infoTag = $mysqli->query($tagRequest);
+                            $infoTag = $infoTag->fetch_assoc();
+                            $tagId = $infoTag['id_tag'];
+                            $_SESSION['id_tag'] = $tagId;
+                            ?>
+                            <a href="tags.php?tag_id=<?php echo $_SESSION['id_tag'] ?>">#
+                                <?php echo $tag; ?>
+                            </a>
+                            <?php $i++;
+                        } } ?>
 
                     </footer>
                 </article>
