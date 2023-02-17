@@ -31,9 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <aside>
             <?php
-            /**
-             * Etape 3: récupérer le nom de l'utilisateur
-             */
+
             $laQuestionEnSql = "SELECT * FROM `users` WHERE id= '$userId' ";
             $lesInformations = $mysqli->query($laQuestionEnSql);
             $user = $lesInformations->fetch_assoc();
@@ -50,9 +48,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         </aside>
         <main>
             <?php
-            /**
-             * Etape 3: récupérer tous les messages des abonnements
-             */
+
             $laQuestionEnSql = "
                     SELECT posts.content,
                     posts.created,
@@ -126,12 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </footer>
                 </article>
             <?php
-
-            }
-            // et de pas oublier de fermer ici vote while
-            ?>
-
-
+            } ?>
         </main>
     </div>
 </body>

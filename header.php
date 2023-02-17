@@ -1,5 +1,3 @@
-<?php session_start() ?>
-
 <header>
     <a href='admin.php'><img src="images/resoc.jpg" alt="Logo de notre réseau social" /></a>
     <nav id="menu">
