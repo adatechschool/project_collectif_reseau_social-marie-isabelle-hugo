@@ -1,5 +1,9 @@
 <?php
 include('connect.php');
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Location: feed.php?user_id=' . $_SESSION['connected_id']);
+}
+
 ?>
 <!doctype html>
 <html lang="fr">
@@ -17,20 +21,11 @@ include('connect.php');
     ?>
     <div id="wrapper">
         <?php
-        /**
-         * Cette page est TRES similaire à wall.php. 
-         * Vous avez sensiblement à y faire la meme chose.
-         * Il y a un seul point qui change c'est la requete sql.
-         */
-        /**
-         * Etape 1: Le mur concerne un utilisateur en particulier
-         */
+
         $userId = intval($_GET['user_id']);
         ?>
         <?php
-        /**
-         * Etape 2: se connecter à la base de donnée
-         */
+
         $mysqli = new mysqli("localhost", "root", "root", "socialnetwork");
         ?>
 
@@ -63,6 +58,7 @@ include('connect.php');
                     posts.created,
                     users.alias as author_name,
                     users.id as id_num,  
+                    posts.id as id_post,
                     count(likes.id) as like_number,  
                     GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM followers 
@@ -98,24 +94,32 @@ include('connect.php');
                         </p>
                     </div>
                     <footer>
-                        <?php if (!$like) { ?>
-                            <form method="post" action='feed.php?user_id=<?php echo $_SESSION['connected_user']; ?>'>
-                                <input type="submit" name="likeButton" value="♥ <?php
-                                echo $post['like_number']; ?>">
+                        <?php
+                        include("likes.php");
+                        if (!$liked) { ?>
+                            <form method="post" action='feed.php?user_id=<?php echo $connectedUser; ?>'>
+                                <input type="submit" name=<?php echo $postId ?> value="♥ <?php
+                                    echo $post['like_number']; ?>">
                             </form>
-                        <?php } else { ?>
+                        <?php
+                        } else { ?>
                             <small>♥
                                 <?php echo $post['like_number']; ?>
                             </small>
                         <?php } ?>
-
                         <?php
                         $tagArray = explode(',', $post['taglist']);
                         $i = 0;
                         while ($i < count($tagArray)) {
+                            $tag = $tagArray[$i];
+                            $tagRequest = "SELECT tags.id as id_tag from tags WHERE tags.label = '$tag'";
+                            $infoTag = $mysqli->query($tagRequest);
+                            $infoTag = $infoTag->fetch_assoc();
+                            $tagId = $infoTag['id_tag'];
+                            $_SESSION['id_tag'] = $tagId;
                             ?>
-                            <a href="">#
-                                <?php echo $tagArray[$i]; ?>
+                            <a href="tags.php?tag_id=<?php echo $_SESSION['id_tag'] ?>">#
+                                <?php echo $tag; ?>
                             </a>
                             <?php $i++;
                         } ?>

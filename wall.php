@@ -1,7 +1,9 @@
 <?php
 include('connect.php');
 $userId = intval($_GET['user_id']);
-$connectedUser = intval($_SESSION['connected_id']);
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Location: wall.php?user_id=' . $_SESSION['connected_id']);
+}
 
 // Si le mur est celui de l'utilisatrice
 if (intval($userId) === intval($connectedUser)) {
@@ -141,6 +143,7 @@ if (intval($userId) === intval($connectedUser)) {
              */
             $laQuestionEnSql = "
                     SELECT posts.content, posts.created, users.alias as author_name, users.id as id_num,
+                    posts.id as id_post,
                     COUNT(likes.id) as like_number, GROUP_CONCAT(DISTINCT tags.label) AS taglist 
                     FROM posts
                     JOIN users ON  users.id=posts.user_id
@@ -173,9 +176,19 @@ if (intval($userId) === intval($connectedUser)) {
                         </p>
                     </div>
                     <footer>
-                        <small>♥
-                            <?php echo $post['like_number']; ?>
-                        </small>
+                        <?php
+                        include("likes.php");
+                        if (!$liked) { ?>
+                            <form method="post" action='wall.php?user_id=<?php echo $connectedUser; ?>'>
+                                <input type="submit" name=<?php echo $postId ?> value="♥ <?php
+                                    echo $post['like_number']; ?>">
+                            </form>
+                        <?php
+                        } else { ?>
+                            <small>♥
+                                <?php echo $post['like_number']; ?>
+                            </small>
+                        <?php } ?>
                         <a href="">
                             <?php echo $post['taglist'] ?>
                         </a>

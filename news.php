@@ -1,6 +1,8 @@
 <?php
 include('connect.php');
-$connectedUser = $_SESSION['connected_id'];
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Location: news.php?user_id=' . $_SESSION['connected_id']);
+}
 ?>
 
 <!doctype html>

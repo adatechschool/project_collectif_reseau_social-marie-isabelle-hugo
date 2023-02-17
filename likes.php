@@ -14,7 +14,6 @@ if ($info) {
 }
 
 $beenClicked = isset($_POST[$postId]);
-
 if ($beenClicked) {
     $hasNotBeenLikedSQL = "
             INSERT INTO likes (post_id, user_id)
