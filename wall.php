@@ -1,8 +1,10 @@
 <?php
 include('connect.php');
 $userId = intval($_GET['user_id']);
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $userId == $connectedUser) {
     header('Location: wall.php?user_id=' . $_SESSION['connected_id']);
+} else {
+    header('Location: wall.php?user_id=' . $userId);
 }
 
 // Si le mur est celui de l'utilisatrice
