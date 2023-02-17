@@ -1,5 +1,6 @@
-<?php
-include('connect.php');
+<?php session_start();
+$mysqli = new mysqli("localhost", "root", "root", "socialnetwork"); 
+
 $isConnected = false;
 $enCoursDeTraitement = isset($_POST['email']);
 if ($enCoursDeTraitement) {
@@ -23,6 +24,11 @@ if ($enCoursDeTraitement) {
         echo "Votre connexion est un succès : " . $user['alias'] . ".";
         $_SESSION['connected_id'] = $user['id'];
         $isConnected = true;
+
+        // Si connecté, aller à la page wall
+        if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isConnected) {
+            header('Location: wall.php?user_id=' . $_SESSION['connected_id']);
+        }
     }
 }
 
