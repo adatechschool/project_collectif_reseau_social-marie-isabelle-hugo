@@ -93,9 +93,7 @@ if (!empty($_POST['email'])) {
 
 
                     <dt><label for="user_picture">Choose a picture</label></dt>
-                    <dd><input type="hidden" name="MAX_FILE_SIZE" value="250000" />
-                        <input type="file" name="user_picture" />
-                    </dd>
+                    <dd><input type="file" name="user_picture" /></dd>
 
                     <dt><label for='email'>E-Mail</label></dt>
                     <dd><input type='email' name='email'></dd>
