@@ -20,20 +20,20 @@
         include('typecol.php');
         ?>
         <div id="pageContent">
-            <div >
+            <div>
                 <main>
-                <?php 
-                $userId = intval($_GET['user_id']);
-                $laQuestionEnSql = " 
+                    <?php
+                    $userId = $_SESSION['connected_id'];
+                    $laQuestionEnSql = " 
                                 SELECT * FROM users
                                 WHERE users.id = '$userId' 
                                 ";
-                $lesInformations = $mysqli->query($laQuestionEnSql);
-                if (!$lesInformations) {
-                    echo ("Échec de la requete : " . $mysqli->error);
-                }
-                $user = $lesInformations->fetch_assoc();
-                ?>
+                    $lesInformations = $mysqli->query($laQuestionEnSql);
+                    if (!$lesInformations) {
+                        echo ("Échec de la requete : " . $mysqli->error);
+                    }
+                    $user = $lesInformations->fetch_assoc();
+                    ?>
                     <article id='viewProfile'>
                         <h3>viewProfile</h3>
                         <dl>
@@ -57,16 +57,16 @@
                     </article>
                     <article id='myPost'>
                         <p>Create a new post</label><br />
-                            <input type="file" name="file" id="file"/>
+                            <input type="file" name="file" id="file" />
                             <textarea name="create_post" id="create_post" cols="100" rows="6" wrap="hard"></textarea>
                             <input type='submit'>
                         </p>
-                        
+
                         <h3>viewPost</h3>
 
                     </article>
                 </main>
-                </div>
+            </div>
         </div>
     </div>
 
@@ -76,7 +76,3 @@
 </body>
 
 </html>
-
-
-
-

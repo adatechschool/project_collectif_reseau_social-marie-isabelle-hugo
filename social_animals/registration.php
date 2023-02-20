@@ -48,8 +48,6 @@ if (!empty($_POST['email'])) {
     $userRequestResponse = $mysqli->query($createUserRequest);
 
 }
-
-
 ?>
 
 <!DOCTYPE html>
@@ -63,19 +61,18 @@ if (!empty($_POST['email'])) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body>
-
-
+<body class="bg-yellow-50">
     <main>
-        <article>
-            <h2>Create your account</h2>
-
-
-
+        <article class="flex flex-col space-y-4 h-screen justify-center items-center">
+            <div id='logo-container'>
+                <image src="images/logo.png" alt="pets logo" id="logo" width=200px class="animate-pulse"></image>
+            </div>
+            <h2 class="text-2xl">Create your account</h2>
             <!-- Registration fields  -->
-            <form enctype="multipart/form-data" action="registration.php" method="post">
+            <form enctype="multipart/form-data" action="registration.php" method="post"
+                class="flex flex-col space-y-2 items-center">
 
-                <dl>
+                <dl class="flex flex-col space-y-2 items-center">
                     <dt><label for='user_name'>Pseudo</label></dt>
                     <dd><input type='text' name='user_name'></dd>
 
@@ -103,17 +100,19 @@ if (!empty($_POST['email'])) {
                     <dt><label for='password'>Password</label></dt>
                     <dd><input type='password' name='password'></dd>
                 </dl>
-                <input type='submit'>
+                <input class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded" type='submit'>
             </form>
         </article>
 
         <!--  Confirmation of registration -->
-        <?php if (!$userRequestResponse) {
-            echo "Error : " . $mysqli->error;
-        } else {
-            echo "You're now a member of Social Animals, " . $new_alias . " !"; ?>
-            <a href='index.php'>You can now log in.</a>";
-        <?php } ?>
+        <?php if (!empty($_POST['email'])) {
+            if (!$userRequestResponse) {
+                echo "Error : " . $mysqli->error;
+            } else {
+                echo "You're now a member of Social Animals, " . $new_alias . " !"; ?>
+                <a href='index.php'>You can now log in.</a>";
+            <?php }
+        } ?>
 
     </main>
 

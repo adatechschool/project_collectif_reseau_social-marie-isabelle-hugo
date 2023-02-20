@@ -1,8 +1,8 @@
 <header>
     <nav class="bg-orange-100">
         <div class="flex flex-wrap justify-between items-center mx-auto max-w-screen-xl">
-            <div class="w-24">
-                <img src="images/logo.jpg" href="">
+            <div class="w-28">
+                <img src="images/logo.png" href="">
             </div>
             <nav class="flex space-x-32">
                 <a class="text-4xl" href="">Last Posts</a>
