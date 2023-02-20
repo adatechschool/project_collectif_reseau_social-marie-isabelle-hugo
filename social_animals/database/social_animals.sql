@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 20 fév. 2023 à 09:45
+-- Généré le : lun. 20 fév. 2023 à 15:21
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `place` varchar(250) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`)
-);
+) ;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `event_attendees` (
   `event_id` int NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `event_id` (`event_id`)
-);
+) ;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `followers` (
   `following` int NOT NULL,
   KEY `follower` (`follower`),
   KEY `following` (`following`)
-);
+) ;
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
   `post_id` int NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `post_id` (`post_id`)
-);
+) ;
 
 -- --------------------------------------------------------
 
@@ -87,13 +87,13 @@ CREATE TABLE IF NOT EXISTS `likes` (
 DROP TABLE IF EXISTS `posts`;
 CREATE TABLE IF NOT EXISTS `posts` (
   `ID` int NOT NULL AUTO_INCREMENT,
-  `photo` blob NOT NULL,
+  `photo` varchar(50) NOT NULL,
   `description` varchar(250) DEFAULT NULL,
   `date` date NOT NULL,
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `user_id` (`user_id`)
-);
+) ;
 
 -- --------------------------------------------------------
 
@@ -105,9 +105,8 @@ DROP TABLE IF EXISTS `type`;
 CREATE TABLE IF NOT EXISTS `type` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `label` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `ID` (`ID`)
-);
+  PRIMARY KEY (`ID`)
+) ;
 
 --
 -- Déchargement des données de la table `type`
@@ -136,10 +135,11 @@ CREATE TABLE IF NOT EXISTS `users` (
   `email` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
   `type_id` int NOT NULL,
-  `photo` blob NOT NULL,
+  `photo` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `type_id` (`type_id`)
-);
+) ;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
