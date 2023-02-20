@@ -1,8 +1,6 @@
-<?php session_start();
-$mysqli = new mysqli("localhost", "root", "root", "social_animals"); ?> 
-
-
 <?php
+    include('connect.php');
+
     $registrationForm = isset($_POST['email']);
         if ($registrationForm) {
             // $new_alias = $_POST['user_name'];
