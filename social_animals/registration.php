@@ -1,8 +1,8 @@
 <?php
     include('connect.php');
 
-    $registrationForm = isset($_POST['email']);
-        if ($registrationForm) {
+    // If email field isn't empty
+        if (!empty($_POST['email'])) {
             $new_alias = $_POST['user_name'];
             $new_type = $_POST['type'];
             $new_pic = $_FILES['user_picture'];
@@ -59,6 +59,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Social Animals, your pet's social network!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
 </head>
 <body>
 
