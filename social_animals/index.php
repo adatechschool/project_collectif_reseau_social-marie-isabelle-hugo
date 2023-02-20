@@ -13,31 +13,25 @@ if ($connectionForm) {
     // sha256 hash for password safety
     $passwordToCheck = hash('sha256', $passwordToCheck);
 
-    echo $passwordToCheck;
-
-
-    $connectionRequest = "SELECT * FROM users WHERE email LIKE '$passwordToCheck' ";
+    // Getting user infos from DB
+    $connectionRequest = "SELECT * FROM users WHERE email LIKE '$emailToCheck' ";
     
     // Checking fo an email/password match in DB
     $res = $mysqli->query($connectionRequest);
-    $user = $res->fetch_assoc();
-
-    echo "to check : " . $emailToCheck . $passwordToCheck;
-    echo var_dump($user);
-    
+    $user = $res->fetch_assoc();    
 
     if (!$user or $user["password"] != $passwordToCheck) {
         echo "Wrong ID or password, try again.";
 
     } else {
         //  VERIFIER LA BALISE ALIAS DANS LA REQUETE SQL !!!! 
-        echo "Welcome back, " . $user['alias'] . "!";
-        $_SESSION['connected_id'] = $user['id'];
+        echo "Welcome back, " . $user['name'] . "!";
+        $_SESSION['connected_id'] = $user['ID'];
         $isConnected = true;
 
         // Go to wall
         if ($_SERVER['REQUEST_METHOD'] === 'POST' && $isConnected) {
-            header('Location: wall.php?user_id=' . $_SESSION['connected_id']);
+            header('Location: feed.php?user_id=' . $_SESSION['connected_id']);
         }
     }
 }
