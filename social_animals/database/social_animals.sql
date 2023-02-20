@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : ven. 17 fév. 2023 à 15:05
+-- Généré le : lun. 20 fév. 2023 à 09:45
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `events` (
   `place` varchar(250) NOT NULL,
   `name` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `event_attendees` (
   `event_id` int NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `event_id` (`event_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `followers` (
   `following` int NOT NULL,
   KEY `follower` (`follower`),
   KEY `following` (`following`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -76,7 +76,7 @@ CREATE TABLE IF NOT EXISTS `likes` (
   `post_id` int NOT NULL,
   KEY `user_id` (`user_id`),
   KEY `post_id` (`post_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -93,7 +93,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `user_id` int DEFAULT NULL,
   PRIMARY KEY (`ID`),
   KEY `user_id` (`user_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- --------------------------------------------------------
 
@@ -107,7 +107,22 @@ CREATE TABLE IF NOT EXISTS `type` (
   `label` varchar(50) NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `ID` (`ID`)
-);
+) ENGINE=MyISAM AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Déchargement des données de la table `type`
+--
+
+INSERT INTO `type` (`ID`, `label`) VALUES
+(1, 'cat'),
+(2, 'cat'),
+(3, 'dog'),
+(4, 'hamster'),
+(5, 'chinchilla'),
+(6, 'other-mammal'),
+(7, 'bird'),
+(8, 'snake'),
+(9, 'other-reptile');
 
 -- --------------------------------------------------------
 
@@ -119,11 +134,13 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `ID` int NOT NULL AUTO_INCREMENT,
   `name` varchar(50) NOT NULL,
+  `email` varchar(50) NOT NULL,
+  `password` varchar(100) NOT NULL,
   `type_id` int NOT NULL,
   `photo` blob NOT NULL,
   PRIMARY KEY (`ID`),
   KEY `type_id` (`type_id`)
-);
+) ENGINE=MyISAM DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
