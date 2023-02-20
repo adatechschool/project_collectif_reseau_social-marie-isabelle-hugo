@@ -23,7 +23,7 @@
                     <a href="#" class="px-4 py-2 block text-black hover:bg-grey-lighter">My followers</a>
                     <a href="#" class="px-4 py-2 block text-black hover:bg-grey-lighter">Following</a>
                     <hr class="border-t mx-2 border-grey-ligght">
-                    <a href="#" class="px-4 py-2 block text-black hover:bg-grey-lighter">Logout</a>
+                    <a href="index.php" class="px-4 py-2 block text-black hover:bg-grey-lighter">Logout</a>
                 </div>
             </div>
         </div>
