@@ -19,9 +19,14 @@
         <?php
         include('typecol.php');
         ?>
-        <div id="pageContent">
+        <div>
+
         </div>
     </div>
+
+
+
+
 </body>
 
 </html>
