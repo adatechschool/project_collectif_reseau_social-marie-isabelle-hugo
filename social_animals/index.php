@@ -24,7 +24,6 @@ if ($connectionForm) {
         echo "Wrong ID or password, try again.";
 
     } else {
-        //  VERIFIER LA BALISE ALIAS DANS LA REQUETE SQL !!!! 
         echo "Welcome back, " . $user['name'] . "!";
         $_SESSION['connected_id'] = $user['ID'];
         $isConnected = true;
