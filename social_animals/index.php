@@ -11,18 +11,11 @@ if ($connectionForm) {
 
     // sha256 hash for password safety
     $passwordToCheck = hash('sha256', $passwordToCheck);
-
-    // echo $passwordToCheck;
-
-
-    $connectionRequest = "SELECT * FROM users WHERE email LIKE '$passwordToCheck' ";
+    $connectionRequest = "SELECT name as user_name, password as user_password, ID as user_id FROM users WHERE email LIKE '$emailToCheck' ";
 
     // Checking fo an email/password match in DB
     $res = $mysqli->query($connectionRequest);
     $user = $res->fetch_assoc();
-
-    // echo "to check : " . $emailToCheck . $passwordToCheck;
-    // echo var_dump($user);
 }
 ?>
 
@@ -62,17 +55,17 @@ if ($connectionForm) {
                     account!</a>
             </p>
             <?php if ($connectionForm) {
-                if (!$user or $user["password"] != $passwordToCheck) { ?>
+                if (!$user or $user["user_password"] != $passwordToCheck) { ?>
                     <p>
                         <?php echo "Wrong ID or password, try again."; ?>
                     </p>
                 <?php
                 } else { ?>
                     <p>
-                        <?php echo "Welcome back, " . $user['alias'] . "!"; ?>
+                        <?php echo "Welcome back, " . $user['user_name'] . "!"; ?>
                     </p>
                     <?php
-                    $_SESSION['connected_id'] = $user['id'];
+                    $_SESSION['connected_id'] = $user['user_id'];
                     $isConnected = true;
                 }
             } ?>
