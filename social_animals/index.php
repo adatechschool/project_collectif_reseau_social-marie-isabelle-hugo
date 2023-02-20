@@ -13,12 +13,19 @@ if ($connectionForm) {
     // sha256 hash for password safety
     $passwordToCheck = hash('sha256', $passwordToCheck);
 
+    echo $passwordToCheck;
+
 
     $connectionRequest = "SELECT * FROM users WHERE email LIKE '$passwordToCheck' ";
     
     // Checking fo an email/password match in DB
     $res = $mysqli->query($connectionRequest);
     $user = $res->fetch_assoc();
+
+    echo "to check : " . $emailToCheck . $passwordToCheck;
+    echo var_dump($user);
+    
+
     if (!$user or $user["password"] != $passwordToCheck) {
         echo "Wrong ID or password, try again.";
 

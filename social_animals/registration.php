@@ -3,38 +3,32 @@
 
     $registrationForm = isset($_POST['email']);
         if ($registrationForm) {
-            // $new_alias = $_POST['user_name'];
+            $new_alias = $_POST['user_name'];
             $new_type = $_POST['type'];
-            // $new_pic = $_POST['user_picture'];
-            // $new_email = $_POST['email'];
-            // $new_passwd = $_POST['password'];
+            $new_pic = $_POST['user_picture'];
+            $new_email = $_POST['email'];
+            $new_passwd = $_POST['password'];
                     
          //    security against SQL injections
-            // $new_email = $mysqli->real_escape_string($new_email);
-            // $new_alias = $mysqli->real_escape_string($new_alias);
+            $new_email = $mysqli->real_escape_string($new_email);
+            $new_alias = $mysqli->real_escape_string($new_alias);
             $new_type = $mysqli->real_escape_string($new_type);
-            // $new_passwd = $mysqli->real_escape_string($new_passwd);
+            $new_passwd = $mysqli->real_escape_string($new_passwd);
             
             // sha256 hash for password safety
-            // $new_passwd = hash('sha256', $new_passwd);
+            $new_passwd = hash('sha256', $new_passwd);
 
             // getting the type ID
-            $typeIDRequest = "SELECT ID as type_id FROM type WHERE label = '$new_type' ";
+            $typeIDRequest = "SELECT ID as type_id, label as type_label FROM type WHERE label = '$new_type' ";
             $getType = $mysqli->query($typeIDRequest);
-            $type_id = $getType->fetch_assoc();
+            $type_idArray = $getType->fetch_assoc();
+            $type_id = $type_idArray["type_id"];
 
-            // A VERIFIER !!!
+            // // SQL request to create user in DB ---> NEED TO ADD PHOTO
+            $createUserRequest = "INSERT INTO users (id, name, email, password, type_id, photo) 
+                VALUES (NULL, '$new_alias', '$new_email', '$new_passwd', '$type_id', '$new_pic')" ;
 
-            echo var_dump($type_id);
-            echo $type_id('type_id');
-
-
-            // // SQL request to create user in DB
-            // $createUserRequest = "INSERT INTO users (id, name, email, password, type_id, photo) 
-            //     VALUES (NULL, $new_alias, $new_email, $new_passwd, $type_id, $new_pic ; " ;
-            
-                
-            // $userRequestResponse = $mysqli->query($createUserRequest);
+            $userRequestResponse = $mysqli->query($createUserRequest);
             
         }
 
@@ -59,7 +53,7 @@
 
 
                 <!-- Registration fields  -->
-                <form action="registration.php" method="post">
+                <form enctype="multipart/form-data" action="registration.php" method="post">
 
                     <dl>
                         <dt><label for='user_name'>Pseudo</label></dt>
@@ -68,8 +62,8 @@
                         <!-- type -->
 
      
-                            <label for="type">Animal type</label>
-                            <select name="type" id="type">
+                        <dt><label for="type">Animal type</label></dt>
+                        <dd><select name="type" id="type">
                                 <option value="cat">Cat</option>
                                 <option value="dog">Dog</option>
                                 <option value="hamster">Hamster</option>
@@ -78,10 +72,12 @@
                                 <option value="bird">Bird</option>
                                 <option value="snake">Snake</option>
                                 <option value="other-reptile">Other reptile</option>
-                            </select>
+                            </select></dd>
 
-
-                        <!-- picture -->
+                         
+                        <dt><label for="user_picture">Choose a picture</label></dt>
+                        <dd><input type="hidden" name="MAX_FILE_SIZE" value="250000" />
+                                <input type="file" name="user_picture" size=50 /></dd>
 
                         <dt><label for='email'>E-Mail</label></dt>
                         <dd><input type='email' name='email'></dd>
