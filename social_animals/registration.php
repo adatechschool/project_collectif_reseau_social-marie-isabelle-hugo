@@ -5,30 +5,38 @@ $mysqli = new mysqli("localhost", "root", "root", "social_animals"); ?>
 <?php
     $registrationForm = isset($_POST['email']);
         if ($registrationForm) {
-            $new_alias = $_POST['user_name'];
+            // $new_alias = $_POST['user_name'];
             $new_type = $_POST['type'];
-            $new_pic = $_POST['user_picture'];
-            $new_email = $_POST['email'];
-            $new_passwd = $_POST['password'];
+            // $new_pic = $_POST['user_picture'];
+            // $new_email = $_POST['email'];
+            // $new_passwd = $_POST['password'];
                     
          //    security against SQL injections
-            $new_email = $mysqli->real_escape_string($new_email);
-            $new_alias = $mysqli->real_escape_string($new_alias);
-            $type = $mysqli->real_escape_string($type);
-            $new_passwd = $mysqli->real_escape_string($new_passwd);
+            // $new_email = $mysqli->real_escape_string($new_email);
+            // $new_alias = $mysqli->real_escape_string($new_alias);
+            $new_type = $mysqli->real_escape_string($new_type);
+            // $new_passwd = $mysqli->real_escape_string($new_passwd);
             
             // sha256 hash for password safety
-            $new_passwd = hash('sha256', $new_passwd);
+            // $new_passwd = hash('sha256', $new_passwd);
 
             // getting the type ID
-            ////// TO CODE ////
+            $typeIDRequest = "SELECT ID as type_id FROM type WHERE label = '$new_type' ";
+            $getType = $mysqli->query($typeIDRequest);
+            $type_id = $getType->fetch_assoc();
 
-            // SQL request to create user in DB
-            $createUserRequest = "INSERT INTO users (id, name, email, password, type_id, photo) 
-                VALUES (NULL, $new_alias, $new_email, $new_passwd, $type_id, $new_pic ; " ;
+            // A VERIFIER !!!
+
+            echo var_dump($type_id);
+            echo $type_id('type_id');
+
+
+            // // SQL request to create user in DB
+            // $createUserRequest = "INSERT INTO users (id, name, email, password, type_id, photo) 
+            //     VALUES (NULL, $new_alias, $new_email, $new_passwd, $type_id, $new_pic ; " ;
             
                 
-            $userRequestResponse = $mysqli->query($createUserRequest);
+            // $userRequestResponse = $mysqli->query($createUserRequest);
             
         }
 
