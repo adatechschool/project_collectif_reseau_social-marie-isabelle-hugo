@@ -13,8 +13,16 @@
 
 <body class="bg-yellow-50">
     <?php
-    include('header.html')
+    include('header.php');
+    ?>
+    <div class="flex">
+        <?php
+        include('typecol.php');
         ?>
+        <div>
+
+        </div>
+    </div>
 
 
 
