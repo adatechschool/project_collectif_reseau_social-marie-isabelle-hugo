@@ -1,13 +1,30 @@
 <?php
 include('connect.php');
 
-$registrationForm = isset($_POST['email']);
-if ($registrationForm) {
+// If email field isn't empty
+if (!empty($_POST['email'])) {
     $new_alias = $_POST['user_name'];
     $new_type = $_POST['type'];
-    $new_pic = $_FILES['user_picture']['name'];
+    $new_pic = $_FILES['user_picture'];
     $new_email = $_POST['email'];
     $new_passwd = $_POST['password'];
+
+    // getting the image's properties via the $_FILES variable
+    $tmpName = $_FILES['user_picture']['tmp_name'];
+    $imageName = $_FILES['user_picture']['name'];
+    $size = $_FILES['user_picture']['size'];
+    $error = $_FILES['user_picture']['error'];
+
+    // getting the image's extension
+    $getExtension = explode(".", $imageName);
+    $extension = strtolower(end($getExtension));
+
+    // generating a unique name for each profile picture
+    $uniqueName = uniqid('', true);
+    $imageName = $uniqueName . "." . $extension;
+
+    // move image to folder
+    move_uploaded_file($tmpName, './upload/' . $imageName);
 
     //    security against SQL injections
     $new_email = $mysqli->real_escape_string($new_email);
@@ -24,9 +41,9 @@ if ($registrationForm) {
     $type_idArray = $getType->fetch_assoc();
     $type_id = $type_idArray["type_id"];
 
-    // // SQL request to create user in DB ---> NEED TO ADD PHOTO
+    // // SQL request to create user in DB
     $createUserRequest = "INSERT INTO users (id, name, email, password, type_id, photo) 
-                VALUES (NULL, '$new_alias', '$new_email', '$new_passwd', '$type_id', '$new_pic')";
+                VALUES (NULL, '$new_alias', '$new_email', '$new_passwd', '$type_id', '$imageName')";
 
     $userRequestResponse = $mysqli->query($createUserRequest);
 
@@ -46,21 +63,21 @@ if ($registrationForm) {
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="bg-yellow-50">
+<body>
+
 
     <main>
-        <article class="flex flex-col">
+        <article>
             <h2>Create your account</h2>
+
+
 
             <!-- Registration fields  -->
             <form enctype="multipart/form-data" action="registration.php" method="post">
 
-                <dl class="flex flex-col">
+                <dl>
                     <dt><label for='user_name'>Pseudo</label></dt>
                     <dd><input type='text' name='user_name'></dd>
-
-                    <!-- type -->
-
 
                     <dt><label for="type">Animal type</label></dt>
                     <dd><select name="type" id="type">
@@ -76,14 +93,14 @@ if ($registrationForm) {
 
 
                     <dt><label for="user_picture">Choose a picture</label></dt>
-                    <dd><input type="hidden" name="user_picture" id="user_picture" />
-                        <input type="file" name="submit" size=50 />
+                    <dd><input type="hidden" name="MAX_FILE_SIZE" value="250000" />
+                        <input type="file" name="user_picture" />
                     </dd>
 
                     <dt><label for='email'>E-Mail</label></dt>
                     <dd><input type='email' name='email'></dd>
 
-                    <dt><label for='password'>Mot de passe</label></dt>
+                    <dt><label for='password'>Password</label></dt>
                     <dd><input type='password' name='password'></dd>
                 </dl>
                 <input type='submit'>
