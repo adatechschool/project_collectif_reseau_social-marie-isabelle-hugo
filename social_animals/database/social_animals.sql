@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1:3306
--- Généré le : lun. 20 fév. 2023 à 15:59
+-- Généré le : mar. 21 fév. 2023 à 09:08
 -- Version du serveur : 8.0.31
 -- Version de PHP : 8.0.26
 
@@ -59,10 +59,18 @@ CREATE TABLE IF NOT EXISTS `event_attendees` (
 DROP TABLE IF EXISTS `followers`;
 CREATE TABLE IF NOT EXISTS `followers` (
   `follower` int NOT NULL,
-  `following` int NOT NULL,
+  `followed` int NOT NULL,
   KEY `follower` (`follower`),
-  KEY `following` (`following`)
+  KEY `following` (`followed`)
 ) ;
+
+--
+-- Déchargement des données de la table `followers`
+--
+
+INSERT INTO `followers` (`follower`, `followed`) VALUES
+(3, 1),
+(1, 3);
 
 -- --------------------------------------------------------
 
@@ -94,6 +102,16 @@ CREATE TABLE IF NOT EXISTS `posts` (
   PRIMARY KEY (`ID`),
   KEY `user_id` (`user_id`)
 ) ;
+
+--
+-- Déchargement des données de la table `posts`
+--
+
+INSERT INTO `posts` (`ID`, `photo`, `description`, `date`, `user_id`) VALUES
+(1, '63f486010690b5.07993780.jpg', 'Did you know that I am a movie star ?', '2023-02-20', 1),
+(6, '63f48795628ce7.37151080.png', 'Wanna swim?', '2023-02-20', 3),
+(3, '63f48620a841b4.55182163.png', 'I was such a widdle cutie puppy!', '2023-02-21', 1),
+(7, '63f4878cb97b83.64015646.jpg', 'Look, I am a cat', '2023-02-20', 3);
 
 -- --------------------------------------------------------
 
