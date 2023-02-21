@@ -32,15 +32,15 @@
                 $sqlFollowingPosts = "SELECT ID as posts_id, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed'";
                 $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
 
-                while ($followersPosts = $sqlQuery2->fetch_assoc()) {
+                while ($post = $sqlQuery2->fetch_assoc()) {
                     ?>
                     <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
                         <p>
-                            <?php echo $followersPosts['posts_date'] ?>
+                            <?php echo $post['posts_date'] ?>
                         </p>
                         <p>
                             <?php
-                            $followerId = $followersPosts['user_id'];
+                            $followerId = $post['user_id'];
                             $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
                             $sqlQuery3 = $mysqli->query($sqlUserName);
                             $followerFinalName = $sqlQuery3->fetch_assoc();
@@ -48,14 +48,13 @@
                         </p>
                         <div class="bg-black w-96 h-96">
                             <img class="object-cover h-96 w-96"
-                                src="<?php echo 'upload/' . $followersPosts['posts_photo'] ?>">
+                                src="<?php echo 'upload/' . $post['posts_photo'] ?>">
                         </div>
 
                         <p>
-                            <?php echo $followersPosts['posts_description'] ?>
+                            <?php echo $post['posts_description'] ?>
                         </p>
-                        <form action="">
-                            <input type="submit" value="like">
+                            <?php inlude('like.php') ?>
                         </form>
                     </article>
                 <?php } ?>

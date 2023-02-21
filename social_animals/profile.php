@@ -110,7 +110,7 @@
                     <div> <?php echo $post['description']; ?>
                     </div> 
                     
-                    <!------------ Insert likes ---------- -->
+                    <?php include('like.php'); ?>
 
 
                 </article>
