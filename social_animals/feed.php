@@ -59,9 +59,6 @@
                         </form>
                     </article>
                 <?php } ?>
-
-
-
             </div>
         </div>
     </div>
