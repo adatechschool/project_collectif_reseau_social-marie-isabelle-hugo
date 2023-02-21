@@ -1,18 +1,17 @@
 <?php include('connect.php');
-
 $myWall = true;
 $otherUsersWall = false;
 
 // Differenciating the connected user from the wall's owner
 if (isset($_GET['user_id'])) {
     $wallOwnerId = intval($_GET['user_id']);
+    $otherUsersWall = true;
     $myWall = false;
 }
 
-
 // If the user is on their wall, get all their info
-if ($connectedUserId) {
-    $userInfosRequest = "SELECT * FROM users WHERE users.id = '$connectedUserId'  ";
+if (!isset($_GET['user_id'])) {
+    $userInfosRequest = "SELECT * FROM users WHERE users.id = $connectedUserId ";
     $getUserInfos = $mysqli->query($userInfosRequest);
     if (!$getUserInfos) {
         echo ("Échec de la requete : " . $mysqli->error);
@@ -21,7 +20,7 @@ if ($connectedUserId) {
 
     // If the user is browsing another user's wall, get this user's info
 } else {
-    $userInfosRequest = "SELECT * FROM users WHERE users.id = '$wallOwnerId'  ";
+    $userInfosRequest = "SELECT * FROM users WHERE users.id = $wallOwnerId  ";
     $getUserInfos = $mysqli->query($userInfosRequest);
     if (!$getUserInfos) {
         echo ("Échec de la requete : " . $mysqli->error);
@@ -54,6 +53,35 @@ if (isset($_GET['user_id'])) {
         echo ("Échec de la requete : " . $mysqli->error);
     }
 }
+
+//Handle followers and follow - unfollow
+$userFollowerRequest = "SELECT * FROM followers WHERE 
+    follower = $userId";
+$getFollowers = $mysqli->query($userFollowerRequest);
+
+$userFollowedRequest = "SELECT * FROM followers WHERE 
+    followed = $userId";
+$getFollowed = $mysqli->query($userFollowedRequest);
+
+$alreadyFollowed = false;
+
+if (!empty($getFollowed->fetch_assoc())) {
+    $alreadyFollowed = true;
+}
+
+if (isset($_POST['follow'])) {
+    $sqlInsert = "INSERT into followers (follower, followed)
+    VALUES ($connectedUserId, $userId)";
+    $insertFollowerTab = $mysqli->query($sqlInsert);
+    $alreadyFollowed = true;
+}
+
+if (isset($_POST['unfollow'])) {
+    $sqlInsert = "DELETE FROM followers WHERE followers.follower=$connectedUserId and followers.followed=$userId";
+    $insertFollowerTab = $mysqli->query($sqlInsert);
+    $alreadyFollowed = true;
+}
+
 ?>
 
 
@@ -74,13 +102,49 @@ if (isset($_GET['user_id'])) {
     <?php
     include('header.php');
     ?>
-    <div class="flex flex-col">
-        <?php
-        // --------------- Créer colonne de côté ----------------------
-        ?>
+    <div class="flex">
+        <div class="w-32">
+            <?php
+            while ($follo = $getFollowers->fetch_assoc()) {
+                ?>
+
+                <p> Followed by
+                    <?php echo $follo['followed']; ?>
+                </p>
+            <?php }
+            while ($follo = $getFollowed->fetch_assoc()) {
+
+                ?>
+                <p> Following
+                    <?php echo $follo['follower']; ?>
+                </p>
+
+            <?php } ?>
+        </div>
+
         <div id="pageContent">
             <div>
                 <main class="flex flex-col">
+
+                    <?php
+                    if ($otherUsersWall) {
+                        if ($alreadyFollowed) { ?>
+                            <div>
+                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
+                                    <input type="submit" value="unfollow" name="unfollow"
+                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                </form>
+                            </div>
+                        <?php } else { ?>
+                            <div>
+                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
+                                    <input type="submit" value="follow" name="follow"
+                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                </form>
+                            </div>
+                        <?php }
+                    } ?>
+
 
 
                     <!-- User's informations -->
@@ -98,50 +162,47 @@ if (isset($_GET['user_id'])) {
                             <?php echo $user["email"]; ?>
                         </div>
                     </div>
-                    <div>
-                        <?php include('posteditor.php') ?>
-                        <div class="">
-                            <form action="profile.php" enctype="multipart/form-data" method="post"
-                                class="flex flex-col space-y-2 space-x-8 justify-center items-center border-black border-2 bg-lime-50 mt-4">
-                                <label for="user_picture" class="mt-2">Choose a picture</label>
-                                <input type="file" name="user_picture" />
-                                <p>Add a description</p>
-                                <textarea name="description" id="" cols="30" rows="2"></textarea>
-                                <input type="submit" value="Post"
-                                    class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                            </form>
-                        </div>
-                    </div>
+
 
                     <!-- New post form if user is on their wall -->
-                    <?php if ($myWall == true) {
-
-                    // ------------- insertion du formulaire new post -----------------
-                
-                } ?>
+                    <?php if ($myWall == true) { ?>
+                        <div>
+                            <?php include('posteditor.php') ?>
+                            <div class="">
+                                <form action="profile.php" enctype="multipart/form-data" method="post"
+                                    class="flex flex-col space-y-2 space-x-8 justify-center items-center border-black border-2 bg-lime-50 mt-4">
+                                    <label for="user_picture" class="mt-2">Choose a picture</label>
+                                    <input type="file" name="user_picture" />
+                                    <p>Add a description</p>
+                                    <textarea name="description" id="" cols="30" rows="2"></textarea>
+                                    <input type="submit" value="Post"
+                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                </form>
+                            </div>
+                        </div>
+                    <?php } ?>
 
                     <!-- User's older posts -->
                     <!---------------- CSS A FAIRE  ------------>
 
                     <?php while ($post = $getUserPosts->fetch_assoc()) {
                         ?>
-                        <article>
-                            <h3>
+                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                            <h3 class="pt-10 text-2xl">
                                 <time datetime='2020-02-01'>
                                     <?php echo $post['date']; ?>
                                 </time>
                             </h3>
-                            <div>
-                                <div id='image-container' class="w-64 h-64">
-                                    <img src="upload/<?php echo $post['photo']; ?>" alt="post image"
-                                        class="object-cover w-64 h-64 rounded-xl">
-                                </div>
-                                <div>
+                            <div class="pt-6 mx-12">
+                                <a class="bg-black w-96 h-96 ">
+                                    <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
+                                </a>
+                            </div>
+                            <div class="pt-6">
+                                <p>
                                     <?php echo $post['description']; ?>
-                                </div>
-
-                                <!-- <?php include('like.php'); ?> -->
-
+                                </p>
+                            </div>
 
                         </article>
                     <?php } ?>
