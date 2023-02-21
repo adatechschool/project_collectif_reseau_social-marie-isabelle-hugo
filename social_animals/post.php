@@ -45,14 +45,14 @@
                 }
                 while ($post = $lesInformations->fetch_assoc()) {?>
                 <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
-                    <a class="pt-10 text-2xl">
-                        <address>By
+                    <a class="pt-10">
+                        <address>
                             <?php 
                             $postUser = $post['user_id'];
                             $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
                             $lesInformations2 = $mysqli->query($newSql);
                             $postUserName = $lesInformations2->fetch_assoc();
-                            ?><a href="profile.php?user_id=<?php echo $post['user_id']?>"><?php echo $postUserName['user_name']; ?></a>
+                            ?><a class="text-3xl" href="profile.php?user_id=<?php echo $post['user_id']?>"><?php echo $postUserName['user_name']; ?></a>
                         </address>
                     </a>
                     <div class="pt-6 mx-12"> 
@@ -60,12 +60,12 @@
                             <img class="object-cover h-96 w-96 "src="upload/<?php echo $post['photo']; ?>">
                         </a>
                     </div>
-                    <h3 class="pt-6">
+                    <h3 class="pt-6 text-xl">
                         <time datetime="Y-m-d\\TH:i:sP">
                             <?php echo $post['date']; ?>
                         </time>
                     </h3>
-                    <div class="pt-6">
+                    <div class="pt-6 text-xl">
                         <p>
                             <?php echo $post['description']; ?>
                         </p>
