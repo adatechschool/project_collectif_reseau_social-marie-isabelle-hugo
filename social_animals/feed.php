@@ -19,8 +19,50 @@
         <?php
         include('typecol.php');
         ?>
-        <div>
+        <div class="flex flex-col w-screen justify-center items-center space-y-8">
+            <?php include('posteditor.php'); ?>
+            <div id="posts" class="space-y-8">
+                <?php
+                $userID = $_SESSION['connected_id'];
+                $sqlFollowing = "SELECT followed from followers where follower=$userID";
+                $sqlQuery = $mysqli->query($sqlFollowing);
+                $followersData = $sqlQuery->fetch_assoc();
+                $userFollowed = $followersData['followed'];
 
+                $sqlFollowingPosts = "SELECT ID as posts_id, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed'";
+                $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
+
+                while ($followersPosts = $sqlQuery2->fetch_assoc()) {
+                    ?>
+                    <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
+                        <p>
+                            <?php echo $followersPosts['posts_date'] ?>
+                        </p>
+                        <p>
+                            <?php
+                            $followerId = $followersPosts['user_id'];
+                            $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
+                            $sqlQuery3 = $mysqli->query($sqlUserName);
+                            $followerFinalName = $sqlQuery3->fetch_assoc();
+                            echo $followerFinalName['name'] ?>
+                        </p>
+                        <div class="bg-black w-96 h-96">
+                            <img class="object-cover h-96 w-96"
+                                src="<?php echo 'upload/' . $followersPosts['posts_photo'] ?>">
+                        </div>
+
+                        <p>
+                            <?php echo $followersPosts['posts_description'] ?>
+                        </p>
+                        <form action="">
+                            <input type="submit" value="like">
+                        </form>
+                    </article>
+                <?php } ?>
+
+
+
+            </div>
         </div>
     </div>
 
