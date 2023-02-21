@@ -2,9 +2,23 @@
 include('connect.php');
 
 // Refresh page when button like is cliked
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Location: feed.php');
-    }
+// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+//     header('Location: feed.php');
+//     }
+
+// Get followed users' posts
+$sqlFollowing = "SELECT followed from followers where follower=$connectedUserId";
+$sqlQuery = $mysqli->query($sqlFollowing);
+$followersData = $sqlQuery->fetch_assoc();
+$userFollowed = $followersData['followed'];
+$post = $sqlQuery->fetch_assoc();
+
+$sqlFollowingPosts = "SELECT ID as ID, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed' ";
+$sqlQuery2 = $mysqli->query($sqlFollowingPosts);
+
+
+// Send SQL request to like/unlike post
+include('like.php');
 ?>
 
 <!DOCTYPE html>
@@ -42,24 +56,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </form>
             </div>
             <div id="posts" class="space-y-8">
-                <?php
-                $userID = $_SESSION['connected_id'];
-                $sqlFollowing = "SELECT followed from followers where follower=$userID";
-                $sqlQuery = $mysqli->query($sqlFollowing);
-                $followersData = $sqlQuery->fetch_assoc();
-                $userFollowed = $followersData['followed'];
 
-                $sqlFollowingPosts = "SELECT ID as posts_id, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed'";
-                $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
-
-                while ($post = $sqlQuery2->fetch_assoc()) {
+            <!-- Followed users' posts -->
+                <?php while ($post = $sqlQuery2->fetch_assoc()) {
                     ?>
                     <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
                         <p>
                             <?php echo $post['posts_date'] ?>
                         </p>
                         <p>
-                            <?php
+                            <?php // Get follower's name
                             $followerId = $post['user_id'];
                             $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
                             $sqlQuery3 = $mysqli->query($sqlUserName);
@@ -73,7 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <p>
                             <?php echo $post['posts_description'] ?>
                         </p>
-                        <?php incclude('like.php') ?>
+                        <!-- Include likes button -->
+                            <?php include('likebutton.php'); ?>
                         </form>
                     </article>
                 <?php } ?>

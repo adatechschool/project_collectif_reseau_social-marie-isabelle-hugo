@@ -148,18 +148,20 @@ if (isset($_POST['unfollow'])) {
 
 
                     <!-- User's informations -->
-                    <div id="userDetails" class="flex justify-center items-center space-x-4">
+                    <div id="userDetails" class="flex justify-center items-center space-x-16 py-10">
                         <!-- <div id="pictureContainer" class="w-30 h-30 rounded-full"> -->
                         <img class="object-cover object-center w-40 h-40 rounded-full"
                             src="upload/<?php echo $user['photo'] ?>" alt="Profile picture">
                         <div>
-                            <?php echo $user['name']; ?>
-                        </div>
-                        <div>
-                            <?php echo $userType["label"]; ?>
-                        </div>
-                        <div>
-                            <?php echo $user["email"]; ?>
+                            <div class="text-4xl">
+                                <?php echo $user['name']; ?>
+                            </div>
+                            <div class="text-2xl pt-5">
+                                <?php echo $userType["label"]; ?>
+                            </div>
+                            <div class="text-2xl">
+                                <?php echo $user["email"]; ?>
+                            </div>
                         </div>
                     </div>
 
@@ -188,17 +190,27 @@ if (isset($_POST['unfollow'])) {
                     <?php while ($post = $getUserPosts->fetch_assoc()) {
                         ?>
                         <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
-                            <h3 class="pt-10 text-2xl">
-                                <time datetime='2020-02-01'>
-                                    <?php echo $post['date']; ?>
-                                </time>
-                            </h3>
+                        <a class="pt-10 text-3xl">
+                            <address>
+                                <?php 
+                                $postUser = $post['user_id'];
+                                $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
+                                $lesInformations2 = $mysqli->query($newSql);
+                                $postUserName = $lesInformations2->fetch_assoc();
+                                ?><?php echo $postUserName['user_name']; ?></a>
+                            </address>
+                        </a>
                             <div class="pt-6 mx-12">
                                 <a class="bg-black w-96 h-96 ">
                                     <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
                                 </a>
                             </div>
-                            <div class="pt-6">
+                            <h3 class="pt-6 text-xl">
+                                <time datetime='2020-02-01'>
+                                    <?php echo $post['date']; ?>
+                                </time>
+                            </h3>
+                            <div class="pt-6 text-xl">
                                 <p>
                                     <?php echo $post['description']; ?>
                                 </p>
