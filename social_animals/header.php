@@ -7,7 +7,7 @@
             <nav class="flex space-x-32">
                 <a class="text-4xl" href="post.php">Last Posts</a>
                 <a class="text-4xl" href="feed.php">My feed</a>
-                <a class="text-4xl" href="">Events</a>
+                <a class="text-4xl" href="event.php">Events</a>
             </nav>
             <div class="relative group">
                 <div
