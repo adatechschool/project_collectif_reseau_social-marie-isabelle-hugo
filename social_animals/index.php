@@ -1,5 +1,9 @@
 <?php
 include('connect.php');
+
+// Setting the $_SESSION['connected_user'] to NULL (= disconnect from previous user)
+$_SESSION['connected_id'] = NULL;
+
 $isConnected = false;
 $connectionForm = isset($_POST['email']);
 if ($connectionForm) {
