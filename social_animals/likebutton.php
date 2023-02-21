@@ -22,14 +22,14 @@ if ($hasBeenLiked){ ?>
 <form method="post" action='<?php echo $actualPageUrl ?>'>
     <input type="hidden" name="getPostId" value='<?php echo $postId ?>'>
     <input type="submit" name="unlike" value="♥ <?php echo $postLikes['like_number']; ?>"
-    class="cursor-pointer">
+    class="font-extrabold cursor-pointer">
 </form>
 
 <?php } else { ?>
     <form method="post" action='<?php echo $actualPageUrl ?>'>
     <input type="hidden" name="getPostId" value='<?php echo $postId ?>'>
     <input type="submit" name="like" value="♥ <?php echo $postLikes['like_number']; ?>"
-    class="font-extrabold cursor-pointer">
+    class="cursor-pointer">
 </form>
 
 <?php } ?>
