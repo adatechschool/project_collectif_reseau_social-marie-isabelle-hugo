@@ -17,8 +17,6 @@
     include('header.php');
     ?>
     <div id="wrapper" class='profile'>
-
-
         <aside>
             <img src="images/user.jpg" alt="Portrait de l'utilisatrice" />
             <section>
@@ -27,7 +25,6 @@
                     n°
                     <?php echo intval($_GET['user_id']) ?>
                 </p>
-
             </section>
         </aside>
         <main>
