@@ -22,6 +22,7 @@
         <div id="pageContent">
             <div>
                 <main>
+                    <aside></aside>
                     <?php
                     $userId = $_SESSION['connected_id'];
                     $laQuestionEnSql = " 
