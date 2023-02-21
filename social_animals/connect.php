@@ -1,2 +1,2 @@
 <?php session_start();
-$mysqli = new mysqli("localhost", "root", "root", "social_animals"); ?> 
+$mysqli = new mysqli("localhost", "root", "root", "social_animals"); ?>
