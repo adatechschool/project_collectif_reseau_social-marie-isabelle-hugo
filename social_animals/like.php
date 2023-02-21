@@ -2,7 +2,9 @@
 $postId = $post['ID'];
 
 // get post's likes
-$getPostLikes = "COUNT post_id FROM likes WHERE post_id = $postID";
+$getPostLikesRequest = "COUNT post_id FROM likes WHERE post_id = $postID";
+$getPostLikes = $mysqli->query($getPostLikesRequest);
+$postLikes = $getPostLikes->fetch_assoc();
 
 
 // verify if post has been liked by user
