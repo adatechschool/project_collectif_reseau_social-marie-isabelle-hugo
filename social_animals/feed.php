@@ -30,6 +30,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ?>
         <div class="flex flex-col w-screen justify-center items-center space-y-8">
             <?php include('posteditor.php'); ?>
+            <div class="">
+                <form action="feed.php" enctype="multipart/form-data" method="post"
+                    class="flex flex-col space-y-2 space-x-8 justify-center items-center border-black border-2 bg-lime-50 mt-4">
+                    <label for="user_picture" class="mt-2">Choose a picture</label>
+                    <input type="file" name="user_picture" />
+                    <p>Add a description</p>
+                    <textarea name="description" id="" cols="30" rows="2"></textarea>
+                    <input type="submit" value="Post"
+                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                </form>
+            </div>
             <div id="posts" class="space-y-8">
                 <?php
                 $userID = $_SESSION['connected_id'];
@@ -56,20 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             echo $followerFinalName['name'] ?>
                         </p>
                         <div class="bg-black w-96 h-96">
-                            <img class="object-cover h-96 w-96"
-                                src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                            <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
                         </div>
 
                         <p>
                             <?php echo $post['posts_description'] ?>
                         </p>
-                            <?php include('like.php') ?>
+                        <?php incclude('like.php') ?>
                         </form>
                     </article>
                 <?php } ?>
-
-
-
             </div>
         </div>
     </div>
