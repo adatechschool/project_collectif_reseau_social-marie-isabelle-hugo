@@ -47,7 +47,10 @@ if ($connectionForm) {
                     <dt><label for='motpasse'>Password</label></dt>
                     <dd><input type='password' name='password'></dd>
                 </dl>
-                <input type='submit' class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                <input type='submit' class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+                    value="Log in" <?php if ($isConnected) {
+                        ?> href="feed.php" <?php
+                    } ?>>
             </form>
             <p>
                 Not a member yet?
@@ -65,8 +68,10 @@ if ($connectionForm) {
                         <?php echo "Welcome back, " . $user['user_name'] . "!"; ?>
                     </p>
                     <?php
-                    $_SESSION['connected_id'] = $user['user_id'];
                     $isConnected = true;
+                    $_SESSION['connected_id'] = $user['user_id'];
+                    header('Location: feed.php');
+
                 }
             } ?>
 
