@@ -1,3 +1,12 @@
+<?php 
+include('connect.php');
+
+// Refresh page when button like is cliked
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    header('Location: feed.php');
+    }
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -64,7 +73,7 @@
                         <p>
                             <?php echo $post['posts_description'] ?>
                         </p>
-                        <?php include('like.php') ?>
+                        <?php incclude('like.php') ?>
                         </form>
                     </article>
                 <?php } ?>
