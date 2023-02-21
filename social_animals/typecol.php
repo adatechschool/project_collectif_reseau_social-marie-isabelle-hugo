@@ -1,5 +1,4 @@
 <?php
-include('connect.php');
 $typeRequest = "SELECT label as type_label, id as type_id FROM type";
 $quer = $mysqli->query($typeRequest);
 ?>

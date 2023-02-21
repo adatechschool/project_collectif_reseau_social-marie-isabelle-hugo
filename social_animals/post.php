@@ -1,3 +1,5 @@
+<?php include('connect.php'); ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -13,64 +15,63 @@
 
 <body class="bg-yellow-50">
     <?php
+    
     include('header.php');
     ?>
     <div class="flex">
         <?php
         include('typecol.php');
         ?>
-        <div id="pageContent">
+        <div class="flex flex-col w-screen justify-center items-center space-y-8">
             <main>
-                <article>
-                <?php
+            <?php
+            // if(isset($_POST['type']))
+                    // {
+                    //    foreach($_POST['type'] as $value)
+                    //    {
+                    //       echo $value ;
+                    //    }
+                    // }
+            
                 $connectedUserId = $_SESSION['connected_id'];
                 $laQuestionEnSql = "
-                        SELECT posts.description, posts.date, posts.photo, users.name, users.id, posts.id, 
+                        SELECT posts.description, posts.date, posts.photo, posts.id, user_id 
                         FROM posts
-                        JOIN users ON  users.id=posts.user_id
-                        LEFT JOIN likes      ON likes.post_id  = posts.id 
-                        WHERE followers.following_user_id='$connectedUserId' 
-                        GROUP BY posts.id
-                        ORDER BY posts.created DESC  
                         ";
                 $lesInformations = $mysqli->query($laQuestionEnSql);
+
                 if (!$lesInformations) {
                     echo ("Échec de la requete : " . $mysqli->error);
                 }
-                while ($post = $lesInformations->fetch_assoc()) {
-                    
-                    if(isset($_POST['type']))
-                    {
-                       foreach($_POST['type'] as $value)
-                       {
-                          echo $value ;
-                       }
-                    }
-                    
-                    ?>
-                    <a>
+                while ($post = $lesInformations->fetch_assoc()) {?>
+                <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                    <a class="pt-10 text-2xl">
                         <address>By
-                            <?php echo $post['user_name']; ?>
+                            <?php 
+                            $postUser = $post['user_id'];
+                            $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
+                            $lesInformations2 = $mysqli->query($newSql);
+                            $postUserName = $lesInformations2->fetch_assoc();
+                            ?><a href="profile.php?user_id=<?php echo $post['user_id']?>"><?php echo $postUserName['user_name']; ?></a>
                         </address>
                     </a>
-                    <div> 
-                        <a>
-                            <?php echo $post['photo']; ?>
+                    <div class="pt-6 mx-12"> 
+                        <a class="bg-black w-96 h-96 ">
+                            <img class="object-cover h-96 w-96 "src="upload/<?php echo $post['photo']; ?>">
                         </a>
                     </div>
-                    <h3>
+                    <h3 class="pt-6">
                         <time datetime="Y-m-d\\TH:i:sP">
                             <?php echo $post['date']; ?>
                         </time>
                     </h3>
-                    <div>
+                    <div class="pt-6">
                         <p>
                             <?php echo $post['description']; ?>
                         </p>
                     </div>
-                <?php
-                } ?>        
                 </article>
+            <?php } ?>
             </main>
         </div>
     </div>
