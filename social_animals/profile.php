@@ -187,20 +187,22 @@ if (isset($_POST['unfollow'])) {
 
                     <?php while ($post = $getUserPosts->fetch_assoc()) {
                         ?>
-                        <article>
-                            <h3>
+                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                            <h3 class="pt-10 text-2xl">
                                 <time datetime='2020-02-01'>
                                     <?php echo $post['date']; ?>
                                 </time>
                             </h3>
-                            <div>
-                                <div id='image-container' class="w-64 h-64">
-                                    <img src="upload/<?php echo $post['photo']; ?>" alt="post image"
-                                        class="object-cover w-64 h-64 rounded-xl">
-                                </div>
-                                <div>
+                            <div class="pt-6 mx-12">
+                                <a class="bg-black w-96 h-96 ">
+                                    <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
+                                </a>
+                            </div>
+                            <div class="pt-6">
+                                <p>
                                     <?php echo $post['description']; ?>
-                                </div>
+                                </p>
+                            </div>
 
                         </article>
                     <?php } ?>
