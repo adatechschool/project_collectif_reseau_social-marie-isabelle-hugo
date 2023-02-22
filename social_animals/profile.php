@@ -139,50 +139,46 @@ include('like.php');
                             <div class="text-4xl">
                                 <?php echo $user['name']; ?>
                             </div>
-                            <div class="text-2xl pt-5">
+                            <div class="text-2xl pt-2">
                                 <?php echo $userType["label"]; ?>
                             </div>
-                            <div class="text-2xl">
+                            <div class="text-2xl pb-2">
                                 <?php echo $user["email"]; ?>
                             </div>
+                            <!-- Bouton Follow/UnFollow -->
+                            <?php
+                            if ($otherUsersWall) {
+                                if ($alreadyFollowed) { ?>
+                                    <div>
+                                        <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
+                                            <input type="submit" value="unfollow" name="unfollow"
+                                                class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                        </form>
+                                    </div>
+                                <?php } else { ?>
+                                    <div class="flex justify-center items-center space-x-16 py-10">
+                                        <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
+                                            <input type="submit" value="follow" name="follow"
+                                                class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                        </form>
+                                    </div>
+                                <?php }
+                            } ?>
                         </div>
                     </div>
 
-                    <!-- Bouton Follow/UnFollow -->
-                    <?php
-                    if ($otherUsersWall) {
-                        if ($alreadyFollowed) { ?>
-                            <div class="flex justify-center items-center space-x-16 py-10">
-                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
-                                    <input type="submit" value="unfollow" name="unfollow"
-                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                                </form>
-                            </div>
-                        <?php } else { ?>
-                            <div class="flex justify-center items-center space-x-16 py-10">
-                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
-                                    <input type="submit" value="follow" name="follow"
-                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                                </form>
-                            </div>
-                        <?php }
-                    } ?>
-
-
-
                     <!-- New post form if user is on their wall -->
                     <?php if ($myWall == true) { ?>
-                        <div>
+                        <div class="flex flex-col w-screen justify-center items-center space-y-8">
                             <?php include('posteditor.php') ?>
                             <div class="">
                                 <form action="profile.php" enctype="multipart/form-data" method="post"
-                                    class="flex flex-col space-y-2 space-x-8 justify-center items-center border-black border-2 bg-lime-50 mt-4">
-                                    <label for="user_picture" class="mt-2">Share your cutest picture!</label>
+                                class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
+                                    <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your cutest picture!</label>
                                     <input type="file" name="user_picture" />
-                                    <p>Add a cool description</p>
-                                    <textarea name="description" id="" cols="30" rows="2"></textarea>
+                                    <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg">Add a cool description</textarea>
                                     <input type="submit" value="Post"
-                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                    class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
                                 </form>
                             </div>
                         </div>

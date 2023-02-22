@@ -42,13 +42,12 @@ include('like.php');
             <?php include('posteditor.php'); ?>
             <div class="">
                 <form action="feed.php" enctype="multipart/form-data" method="post"
-                    class="flex flex-col space-y-2 space-x-8 justify-center items-center border-black border-2 bg-lime-50 mt-4">
-                    <label for="user_picture" class="mt-2">Share your cutest picture!</label>
-                    <input type="file" name="user_picture" />
-                    <p>Add a cool description</p>
-                    <textarea name="description" id="" cols="30" rows="2"></textarea>
+                class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
+                    <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your cutest picture!</label>
+                    <input type="file" name="user_picture"/>
+                    <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg">Add a cool description</textarea>
                     <input type="submit" value="Post"
-                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
                 </form>
             </div>
             <div id="posts" class="space-y-8">
@@ -58,11 +57,8 @@ include('like.php');
                 if (isset($followersData)) {
                     while ($post = $sqlQuery2->fetch_assoc()) {
                         ?>
-                        <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
-                            <p>
-                                <?php echo $post['posts_date'] ?>
-                            </p>
-                            <p>
+                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                            <p class="pt-10 text-3xl pb-6">
                                 <?php // Get follower's name
                                         $followerId = $post['user_id'];
                                         $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
@@ -70,11 +66,13 @@ include('like.php');
                                         $followerFinalName = $sqlQuery3->fetch_assoc();
                                         echo $followerFinalName['name'] ?>
                             </p>
-                            <div class="bg-black w-96 h-96">
+                            <div class="bg-black w-96 h-96 mx-12">
                                 <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
                             </div>
-
-                            <p>
+                            <p class="pt-6 text-xl">
+                                <?php echo $post['posts_date'] ?>
+                            </p>
+                            <p class="pt-6 text-xl">
                                 <?php echo $post['posts_description'] ?>
                             </p>
                             <!-- Include likes button -->
