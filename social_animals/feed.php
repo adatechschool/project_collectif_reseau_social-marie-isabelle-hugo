@@ -61,11 +61,8 @@ include('like.php');
                 if (isset($followersData)){
                   if(count($checkedTypes) == 0){ 
                     while ($post = $sqlQuery2->fetch_assoc()) { ?>
-                    <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
-                        <p>
-                            <?php echo $post['posts_date'] ?>
-                        </p>
-                        <p>
+                    <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                        <p class="pt-10 text-3xl">
                             <?php // Get follower's name
                                 $followerId = $post['user_id'];
                                 $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
@@ -73,11 +70,15 @@ include('like.php');
                                 $followerFinalName = $sqlQuery3->fetch_assoc();
                                 echo $followerFinalName['name'] ?>
                         </p>
-                        <div class="bg-black w-96 h-96">
-                            <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                        <div class="pt-6 mx-12">
+                            <div class="bg-black w-96 h-96">
+                                <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                            </div>
                         </div>
-
-                        <p>
+                        <p class="pt-6 text-xl">
+                            <?php echo $post['posts_date'] ?>
+                        </p>
+                        <p class="pt-6 text-xl">
                             <?php echo $post['posts_description'] ?>
                         </p>
                         <!-- Include likes button -->
@@ -96,11 +97,8 @@ include('like.php');
                         if ($post['user_type'] == $userType) { 
                             ?>
 
-                <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
-                        <p>
-                            <?php echo $post['posts_date'] ?>
-                        </p>
-                        <p>
+                    <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                        <p class="pt-10 text-3xl">
                             <?php // Get follower's name
                                 $followerId = $post['user_id'];
                                 $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
@@ -108,11 +106,15 @@ include('like.php');
                                 $followerFinalName = $sqlQuery3->fetch_assoc();
                                 echo $followerFinalName['name'] ?>
                         </p>
-                        <div class="bg-black w-96 h-96">
-                            <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                        <div class="pt-6 mx-12">
+                            <div class="bg-black w-96 h-96">
+                                <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                            </div>
                         </div>
-
-                        <p>
+                        <p class="pt-6 text-xl">
+                            <?php echo $post['posts_date'] ?>
+                        </p>
+                        <p class="pt-6 text-xl">
                             <?php echo $post['posts_description'] ?>
                         </p>
                         <!-- Include likes button -->
