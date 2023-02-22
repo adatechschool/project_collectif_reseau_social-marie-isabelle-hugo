@@ -155,16 +155,15 @@ include('like.php');
                     <div class="">
                         <div class="flex justify-center items-center space-x-16 " >
                             <div class="flex flex-col text-xl">
-                            <p>Following</p>
-                            <p>
-                                <?php
+                            <p class="italic">Following:</p>
+                            <?php
                                 while ($follo = $getFollowing->fetch_assoc()) {
                                     echo $follo['user_name'] . ' ';
                                 } ?>
                             </p>
                             </div>
                             <div class="flex flex-col text-xl">
-                            <p> Followed by</p><p>
+                            <p class="italic"> Followed by:</p><p>
                             <?php
                             while ($follo = $getFollowed->fetch_assoc()) {
                                 ?>
