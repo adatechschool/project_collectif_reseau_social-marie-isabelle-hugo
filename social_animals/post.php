@@ -1,4 +1,20 @@
-<?php include('connect.php'); ?>
+<?php include('connect.php'); 
+
+// Get all Social Animals posts
+$getPostsRequest = "
+        SELECT posts.description, posts.date, posts.photo, posts.id as ID, user_id 
+        FROM posts
+        ";
+$postsInfos = $mysqli->query($getPostsRequest);
+
+if (!$postsInfos) {
+    echo ("Échec de la requete : " . $mysqli->error);
+}
+
+// Send SQL request to like/unlike post
+include('like.php');
+
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -7,7 +23,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Social Animals</title>
     <link href="output.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -33,25 +49,16 @@
                     //    }
                     // }
             
-                $connectedUserId = $_SESSION['connected_id'];
-                $laQuestionEnSql = "
-                        SELECT posts.description, posts.date, posts.photo, posts.id, user_id 
-                        FROM posts
-                        ";
-                $lesInformations = $mysqli->query($laQuestionEnSql);
-
-                if (!$lesInformations) {
-                    echo ("Échec de la requete : " . $mysqli->error);
-                }
-                while ($post = $lesInformations->fetch_assoc()) {?>
+                
+                while ($post = $postsInfos->fetch_assoc()) {?>
                 <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
                     <a class="pt-10">
                         <address>
                             <?php 
                             $postUser = $post['user_id'];
                             $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
-                            $lesInformations2 = $mysqli->query($newSql);
-                            $postUserName = $lesInformations2->fetch_assoc();
+                            $postsInfos2 = $mysqli->query($newSql);
+                            $postUserName = $postsInfos2->fetch_assoc();
                             ?><a class="text-3xl" href="profile.php?user_id=<?php echo $post['user_id']?>"><?php echo $postUserName['user_name']; ?></a>
                         </address>
                     </a>
@@ -70,6 +77,8 @@
                             <?php echo $post['description']; ?>
                         </p>
                     </div>
+                    <!-- Include likes button -->
+                    <?php include('likebutton.php'); ?>
                 </article>
             <?php } ?>
             </main>
