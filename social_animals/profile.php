@@ -20,7 +20,7 @@ if (!isset($_GET['user_id'])) {
 
     // If the user is browsing another user's wall, get this user's info
 } else {
-    $userInfosRequest = "SELECT * FROM users WHERE users.id = $wallOwnerId  ";
+    $userInfosRequest = "SELECT * FROM users WHERE users.id = $wallOwnerId ";
     $getUserInfos = $mysqli->query($userInfosRequest);
     if (!$getUserInfos) {
         echo ("Échec de la requete : " . $mysqli->error);
@@ -55,6 +55,7 @@ if (isset($_GET['user_id'])) {
 }
 
 //Handle followers and follow - unfollow
+$alreadyFollowed = false;
 $userFollowerRequest = "SELECT * FROM followers WHERE 
     follower = $userId";
 $getFollowers = $mysqli->query($userFollowerRequest);
@@ -63,10 +64,10 @@ $userFollowedRequest = "SELECT * FROM followers WHERE
     followed = $userId";
 $getFollowed = $mysqli->query($userFollowedRequest);
 
-$alreadyFollowed = false;
-
-if (!empty($getFollowed->fetch_assoc())) {
-    $alreadyFollowed = true;
+while ($isFollowed = $getFollowed->fetch_assoc()) {
+    if ($isFollowed['followed'] == $userId && $isFollowed['follower'] == $connectedUserId) {
+        $alreadyFollowed = true;
+    }
 }
 
 if (isset($_POST['follow'])) {
@@ -126,27 +127,6 @@ if (isset($_POST['unfollow'])) {
             <div>
                 <main class="flex flex-col">
 
-                    <?php
-                    if ($otherUsersWall) {
-                        if ($alreadyFollowed) { ?>
-                            <div>
-                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
-                                    <input type="submit" value="unfollow" name="unfollow"
-                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                                </form>
-                            </div>
-                        <?php } else { ?>
-                            <div>
-                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
-                                    <input type="submit" value="follow" name="follow"
-                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
-                                </form>
-                            </div>
-                        <?php }
-                    } ?>
-
-
-
                     <!-- User's informations -->
                     <div id="userDetails" class="flex justify-center items-center space-x-16 py-10">
                         <!-- <div id="pictureContainer" class="w-30 h-30 rounded-full"> -->
@@ -164,6 +144,27 @@ if (isset($_POST['unfollow'])) {
                             </div>
                         </div>
                     </div>
+
+                    <!-- Bouton Follow/UnFollow -->
+                    <?php
+                    if ($otherUsersWall) {
+                        if ($alreadyFollowed) { ?>
+                            <div class="flex justify-center items-center space-x-16 py-10">
+                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
+                                    <input type="submit" value="unfollow" name="unfollow"
+                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                </form>
+                            </div>
+                        <?php } else { ?>
+                            <div class="flex justify-center items-center space-x-16 py-10">
+                                <form action="profile.php?user_id=<?php echo $userId ?>" method="post">
+                                    <input type="submit" value="follow" name="follow"
+                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                </form>
+                            </div>
+                        <?php }
+                    } ?>
+
 
 
                     <!-- New post form if user is on their wall -->
@@ -190,16 +191,18 @@ if (isset($_POST['unfollow'])) {
                     <?php while ($post = $getUserPosts->fetch_assoc()) {
                         ?>
                         <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
-                        <a class="pt-10 text-3xl">
-                            <address>
-                                <?php 
-                                $postUser = $post['user_id'];
-                                $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
-                                $lesInformations2 = $mysqli->query($newSql);
-                                $postUserName = $lesInformations2->fetch_assoc();
-                                ?><?php echo $postUserName['user_name']; ?></a>
+                            <a class="pt-10 text-3xl">
+                                <address>
+                                    <?php
+                                    $postUser = $post['user_id'];
+                                    $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
+                                    $lesInformations2 = $mysqli->query($newSql);
+                                    $postUserName = $lesInformations2->fetch_assoc();
+                                    ?>
+                                    <?php echo $postUserName['user_name']; ?>
+                            </a>
                             </address>
-                        </a>
+                            </a>
                             <div class="pt-6 mx-12">
                                 <a class="bg-black w-96 h-96 ">
                                     <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
@@ -224,10 +227,6 @@ if (isset($_POST['unfollow'])) {
             </div>
         </div>
     </div>
-
-
-
-
 </body>
 
 </html>
