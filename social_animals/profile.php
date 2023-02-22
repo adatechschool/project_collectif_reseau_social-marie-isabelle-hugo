@@ -151,52 +151,50 @@ include('like.php');
                             <?php }
                         } ?>
                     </div>
-                </div>
-                <div class="">
-                    <div class="flex justify-center items-center space-x-16 ">
-                        <div class="flex flex-col text-xl">
-                            <p>Following</p>
-                            <p>
+                    <div class="">
+                        <div class="flex justify-center items-center space-x-16 ">
+                            <div class="flex flex-col text-xl">
+                                <p class="italic">Following:</p>
                                 <?php
                                 while ($follo = $getFollowing->fetch_assoc()) {
                                     echo $follo['user_name'] . ' ';
                                 } ?>
-                            </p>
-                        </div>
-                        <div class="flex flex-col text-xl">
-                            <p> Followed by</p>
-                            <p>
-                                <?php
-                                while ($follo = $getFollowed->fetch_assoc()) {
-                                    ?>
+                                </p>
+                            </div>
+                            <div class="flex flex-col text-xl">
+                                <p class="italic"> Followed by:</p>
+                                <p>
+                                    <?php
+                                    while ($follo = $getFollowed->fetch_assoc()) {
+                                        ?>
 
-                                    <?php echo $follo['user_name']; ?>
-
-
-                                <?php } ?>
-                            </p>
-                        </div>
-                    </div>
-                </div>
+                                        <?php echo $follo['user_name']; ?>
 
 
-                <!-- New post form if user is on their wall -->
-                <?php if ($myWall == true) { ?>
-                    <div class="flex flex-row w-screen justify-center items-center space-y-8">
-                        <?php include('posteditor.php') ?>
-                        <div class="">
-                            <form action="profile.php" enctype="multipart/form-data" method="post"
-                                class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
-                                <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your
-                                    cutest picture!</label>
-                                <input type="file" name="user_picture" />
-                                <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg"
-                                    placeholder="Add a cool description"></textarea>
-                                <input type="submit" value="Post"
-                                    class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
-                            </form>
+                                    <?php } ?>
+                                </p>
+                            </div>
                         </div>
                     </div>
+
+
+                    <!-- New post form if user is on their wall -->
+                    <?php if ($myWall == true) { ?>
+                        <div class="flex flex-row w-screen justify-center items-center space-y-8">
+                            <?php include('posteditor.php') ?>
+                            <div class="">
+                                <form action="profile.php" enctype="multipart/form-data" method="post"
+                                    class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
+                                    <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your
+                                        cutest picture!</label>
+                                    <input type="file" name="user_picture" />
+                                    <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg text-grey"
+                                        placeholder="Add a cool description""></textarea>
+                                        <input type=" submit" value="Post"
+                                        class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
+                                </form>
+                            </div>
+                        </div>
                 <?php } ?>
 
                 <!-- User's older posts -->
@@ -204,38 +202,38 @@ include('like.php');
 
                 <?php while ($post = $getUserPosts->fetch_assoc()) {
                     ?>
-                    <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-96 pb-24">
-                        <a class="pt-10 text-3xl">
-                            <address>
-                                <?php
-                                $postUser = $post['user_id'];
-                                $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
-                                $lesInformations2 = $mysqli->query($newSql);
-                                $postUserName = $lesInformations2->fetch_assoc();
-                                ?>
-                                <?php echo $postUserName['user_name']; ?>
-                        </a>
-                        </address>
-                        </a>
-                        <div class="pt-6 mx-12">
-                            <a class="bg-black w-96 h-96 ">
-                                <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
+                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-96 pb-24">
+                            <a class="pt-10 text-3xl">
+                                <address>
+                                    <?php
+                                    $postUser = $post['user_id'];
+                                    $newSql = "SELECT users.name as user_name FROM users WHERE users.ID = $postUser";
+                                    $lesInformations2 = $mysqli->query($newSql);
+                                    $postUserName = $lesInformations2->fetch_assoc();
+                                    ?>
+                                    <?php echo $postUserName['user_name']; ?>
                             </a>
-                        </div>
-                        <h3 class="pt-6 text-xl">
-                            <time datetime='2020-02-01'>
-                                <?php echo $post['date']; ?>
-                            </time>
-                        </h3>
-                        <div class="pt-6 text-xl">
-                            <p>
-                                <?php echo $post['description']; ?>
-                            </p>
-                            <!-- Include likes button -->
-                            <?php include('likebutton.php'); ?>
-                        </div>
+                            </address>
+                            </a>
+                            <div class="pt-6 mx-12">
+                                <a class="bg-black w-96 h-96 ">
+                                    <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
+                                </a>
+                            </div>
+                            <h3 class="pt-6 text-xl">
+                                <time datetime='2020-02-01'>
+                                    <?php echo $post['date']; ?>
+                                </time>
+                            </h3>
+                            <div class="pt-6 text-xl">
+                                <p>
+                                    <?php echo $post['description']; ?>
+                                </p>
+                                <!-- Include likes button -->
+                                <?php include('likebutton.php'); ?>
+                            </div>
 
-                    </article>
+                        </article>
                 <?php } ?>
 
 
