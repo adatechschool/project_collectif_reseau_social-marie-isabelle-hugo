@@ -22,7 +22,7 @@ $sqlEvents = $mysqli->query($sqlRequest);
     <?php
     include('header.php');
     ?>
-    <div class="flex flex-col justify-center">
+    <div class="flex flex-row justify-center space-between">
         <main>
             <?php
             while ($event = $sqlEvents->fetch_assoc()) {
@@ -33,8 +33,8 @@ $sqlEvents = $mysqli->query($sqlRequest);
                     $sendAttend = $mysqli->query($sqlAttend);
                 }
                 ?>
-                <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
-                    <h1 class="text-2xl">
+                <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-96 py-10 px-20">
+                    <h1 class="text-2xl bg-orange-200 rounded-full py-2 px-4 mb-2">
                         <?php echo $event['name']; ?>
                     </h1>
                     <p>
@@ -72,7 +72,7 @@ $sqlEvents = $mysqli->query($sqlRequest);
                         ?>
                         <form action="event.php" method="post">
                             <input type="submit" name="<?php echo $eventId ?>" value="attend"
-                                class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
+                                class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-2">
                         </form>
                     <?php } ?>
                 </article>
