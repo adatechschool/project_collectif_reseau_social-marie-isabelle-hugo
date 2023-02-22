@@ -56,15 +56,20 @@ if (isset($_GET['user_id'])) {
 
 //Handle followers and follow - unfollow
 $alreadyFollowed = false;
-$userFollowerRequest = "SELECT * FROM followers WHERE 
-    follower = $userId";
-$getFollowers = $mysqli->query($userFollowerRequest);
+$userFollowingRequest = "SELECT followers.followed, users.id as user_followed, users.name as user_name FROM followers 
+JOIN users ON users.id=followers.followed 
+WHERE follower = $userId";
+$getFollowing = $mysqli->query($userFollowingRequest);
 
-$userFollowedRequest = "SELECT * FROM followers WHERE 
-    followed = $userId";
+$userFollowedRequest = "SELECT followers.follower, users.id as user_follower, users.name as user_name FROM followers 
+JOIN users ON users.id=followers.follower
+WHERE followed = $userId";
 $getFollowed = $mysqli->query($userFollowedRequest);
 
-while ($isFollowed = $getFollowed->fetch_assoc()) {
+$checkFollowSql = "SELECT * from followers WHERE followed=$userId";
+$checkFolloQuery = $mysqli->query($checkFollowSql);
+
+while ($isFollowed = $checkFolloQuery->fetch_assoc()) {
     if ($isFollowed['followed'] == $userId && $isFollowed['follower'] == $connectedUserId) {
         $alreadyFollowed = true;
     }
@@ -108,22 +113,22 @@ include('like.php');
     ?>
     <div class="flex">
         <div class="w-32">
+            <p>Following</p>
+            <p>
+                <?php
+                while ($follo = $getFollowing->fetch_assoc()) {
+                    echo $follo['user_name'] . ' ';
+                } ?>
+            </p>
+            <p> Followed by</p><p>
             <?php
-            while ($follo = $getFollowers->fetch_assoc()) {
-                ?>
-
-                <p> Followed by
-                    <?php echo $follo['followed']; ?>
-                </p>
-            <?php }
             while ($follo = $getFollowed->fetch_assoc()) {
-
                 ?>
-                <p> Following
-                    <?php echo $follo['follower']; ?>
-                </p>
+                
+                    <?php echo $follo['user_name']; ?>
+                
 
-            <?php } ?>
+            <?php } ?></p>
         </div>
 
         <div id="pageContent">
