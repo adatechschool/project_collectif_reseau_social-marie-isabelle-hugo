@@ -1,11 +1,6 @@
 <?php
 include('connect.php');
 
-// Refresh page when button like is cliked
-// if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-//     header('Location: feed.php');
-//     }
-
 // Get followed users' posts
 $sqlFollowing = "SELECT followed from followers where follower=$connectedUserId";
 $sqlQuery = $mysqli->query($sqlFollowing);
@@ -28,7 +23,7 @@ include('like.php');
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Social Animals</title>
     <link href="output.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 

@@ -1,12 +1,18 @@
 <?php include('connect.php');
-$laQuestionEnSql = "
-SELECT posts.description, posts.date, posts.photo, posts.id, posts.user_id, users.name as user_name 
-FROM posts JOIN users ON users.id=posts.user_id";
-$lesInformations = $mysqli->query($laQuestionEnSql);
 
-if (!$lesInformations) {
+// Get all Social Animals posts
+$getPostsRequest = "
+SELECT posts.description, posts.date, posts.photo, posts.id as ID, posts.user_id, users.name as user_name 
+FROM posts JOIN users ON users.id=posts.user_id";
+$postsInfos = $mysqli->query($getPostsRequest);
+
+if (!$postsInfos) {
     echo ("Échec de la requete : " . $mysqli->error);
 }
+
+// Send SQL request to like/unlike post
+include('like.php');
+
 ?>
 
 <!DOCTYPE html>
@@ -16,7 +22,7 @@ if (!$lesInformations) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index</title>
+    <title>Social Animals</title>
     <link href="output.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -33,7 +39,7 @@ if (!$lesInformations) {
         <div class="flex flex-col w-screen justify-center items-center space-y-8">
             <main>
                 <?php
-                while ($post = $lesInformations->fetch_assoc()) { ?>
+                while ($post = $postsInfos->fetch_assoc()) { ?>
                     <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
                         <a class="pt-10">
                             <address>
@@ -57,6 +63,7 @@ if (!$lesInformations) {
                                 <?php echo $post['description']; ?>
                             </p>
                         </div>
+                        <?php include('likebutton.php'); ?>
                     </article>
                 <?php } ?>
             </main>

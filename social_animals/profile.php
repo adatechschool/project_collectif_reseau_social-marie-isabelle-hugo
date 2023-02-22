@@ -83,6 +83,9 @@ if (isset($_POST['unfollow'])) {
     $alreadyFollowed = true;
 }
 
+// Send SQL request to like/unlike post
+include('like.php');
+
 ?>
 
 
@@ -93,7 +96,7 @@ if (isset($_POST['unfollow'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Social animals</title>
+    <title>Social Animals</title>
     <link href="output.css" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
 
@@ -217,6 +220,8 @@ if (isset($_POST['unfollow'])) {
                                 <p>
                                     <?php echo $post['description']; ?>
                                 </p>
+                                <!-- Include likes button -->
+                                <?php include('likebutton.php'); ?>
                             </div>
 
                         </article>
