@@ -111,8 +111,8 @@ include('like.php');
     <?php
     include('header.php');
     ?>
-    <div class="flex">
-        <div class="w-32">
+    <div class="">
+        <div class="">
             <p>Following</p>
             <p>
                 <?php
@@ -174,7 +174,7 @@ include('like.php');
 
                     <!-- New post form if user is on their wall -->
                     <?php if ($myWall == true) { ?>
-                        <div class="flex flex-col w-screen justify-center items-center space-y-8">
+                        <div class="flex flex-row w-screen justify-center items-center space-y-8">
                             <?php include('posteditor.php') ?>
                             <div class="">
                                 <form action="profile.php" enctype="multipart/form-data" method="post"
@@ -194,7 +194,7 @@ include('like.php');
 
                     <?php while ($post = $getUserPosts->fetch_assoc()) {
                         ?>
-                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-96 pb-24">
                             <a class="pt-10 text-3xl">
                                 <address>
                                     <?php
