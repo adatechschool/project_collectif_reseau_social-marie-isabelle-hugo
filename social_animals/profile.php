@@ -187,7 +187,7 @@ include('like.php');
                                 class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
                                     <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your cutest picture!</label>
                                     <input type="file" name="user_picture" />
-                                    <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg">Add a cool description</textarea>
+                                    <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg text-grey" placeholder="Add a cool description""></textarea>
                                     <input type="submit" value="Post"
                                     class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
                                 </form>
