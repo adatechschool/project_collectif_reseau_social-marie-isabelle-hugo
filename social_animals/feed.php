@@ -5,12 +5,10 @@ include('connect.php');
 $sqlFollowing = "SELECT followed from followers where follower=$connectedUserId";
 $sqlQuery = $mysqli->query($sqlFollowing);
 $followersData = $sqlQuery->fetch_assoc();
-if (isset($followersData)){
+if (isset($followersData)) {
     $userFollowed = $followersData['followed'];
-    $post = $sqlQuery->fetch_assoc();
-
     $sqlFollowingPosts = "SELECT posts.ID as ID, posts.photo as posts_photo, posts.date as posts_date, 
-    posts.description as posts_description, posts.user_id as user_id, users.type_id as user_type 
+    posts.description as posts_description, posts.user_id as user_id, users.type_id as user_type, users.name as user_name
     FROM posts JOIN users on users.id=posts.user_id WHERE user_id='$userFollowed' ";
     $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
 }
@@ -44,10 +42,12 @@ include('like.php');
             <?php include('posteditor.php'); ?>
             <div class="">
                 <form action="feed.php" enctype="multipart/form-data" method="post"
-                class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
-                    <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your cutest picture!</label>
-                    <input type="file" name="user_picture"/>
-                    <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg">Add a cool description</textarea>
+                    class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 py-4 px-8 ">
+                    <label for="user_picture" class="bg-orange-200 rounded-full py-2 px-4 mb-4">Share your cutest
+                        picture!</label>
+                    <input type="file" name="user_picture" />
+                    <textarea name="description" id="" cols="30" rows="2"
+                        class="mt-4 rounded-lg" placeholder="Add a cool description"></textarea>
                     <input type="submit" value="Post"
                         class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
                 </form>
@@ -55,79 +55,77 @@ include('like.php');
             <div id="posts" class="space-y-8">
 
                 <!-- Followed users' posts -->
-                
-                <?php 
+
+                <?php
                 // If no animal type is selected
-                if (isset($followersData)){
-                  if(count($checkedTypes) == 0){ 
-                    while ($post = $sqlQuery2->fetch_assoc()) { ?>
-                    <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
-                        <p class="pt-10 text-3xl">
-                            <?php // Get follower's name
-                                $followerId = $post['user_id'];
-                                $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
-                                $sqlQuery3 = $mysqli->query($sqlUserName);
-                                $followerFinalName = $sqlQuery3->fetch_assoc();
-                                echo $followerFinalName['name'] ?>
-                        </p>
-                        <div class="pt-6 mx-12">
-                            <div class="bg-black w-96 h-96">
-                                <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
-                            </div>
-                        </div>
-                        <p class="pt-6 text-xl">
-                            <?php echo $post['posts_date'] ?>
-                        </p>
-                        <p class="pt-6 text-xl">
-                            <?php echo $post['posts_description'] ?>
-                        </p>
-                        <!-- Include likes button -->
-                        <?php include('likebutton.php'); ?>
-                        </form>
-                    </article>
-                    <?php              
-                    } 
-
-                    // If types are selected
-                }else {
-                    foreach ($checkedTypes as $userType){
-                        if ($post['user_type'] != $userType) {
-                            echo "You don't follow this type";
-                        } 
-                        if ($post['user_type'] == $userType) { 
+                if (isset($followersData)) {
+                    if (count($checkedTypes) == 0) {
+                        while ($followersData = $sqlQuery->fetch_assoc()) {
+                            $userFollowed = $followersData['followed'];
+                            $sqlFollowingPosts = "SELECT posts.ID as ID, posts.photo as posts_photo, posts.date as posts_date, 
+                            posts.description as posts_description, posts.user_id as user_id, users.type_id as user_type, users.name as user_name
+                            FROM posts JOIN users on users.id=posts.user_id WHERE user_id='$userFollowed' ";
+                            $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
+                        }
+                        while ($post = $sqlQuery2->fetch_assoc()) {
                             ?>
+                            <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                                <p class="pt-10 text-3xl">
+                                    <a href="profile.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['user_name'] ?></a>
+                                </p>
+                                <div class=" pt-6 mx-12">
+                                    <div class="bg-black w-96 h-96">
+                                        <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                                    </div>
+                                </div>
+                                <p class="pt-6 text-xl">
+                                    <?php echo $post['posts_date'] ?>
+                                </p>
+                                <p class="pt-6 text-xl">
+                                    <?php echo $post['posts_description'] ?>
+                                </p>
+                                <!-- Include likes button -->
+                                <?php include('likebutton.php'); ?>
+                                </form>
+                            </article>
+                        <?php
+                        }
 
-                    <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
-                        <p class="pt-10 text-3xl">
-                            <?php // Get follower's name
-                                $followerId = $post['user_id'];
-                                $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
-                                $sqlQuery3 = $mysqli->query($sqlUserName);
-                                $followerFinalName = $sqlQuery3->fetch_assoc();
-                                echo $followerFinalName['name'] ?>
-                        </p>
-                        <div class="pt-6 mx-12">
-                            <div class="bg-black w-96 h-96">
-                                <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
-                            </div>
-                        </div>
-                        <p class="pt-6 text-xl">
-                            <?php echo $post['posts_date'] ?>
-                        </p>
-                        <p class="pt-6 text-xl">
-                            <?php echo $post['posts_description'] ?>
-                        </p>
-                        <!-- Include likes button -->
-                        <?php include('likebutton.php'); ?>
-                        </form>
-                    </article>
+                        // If types are selected
+                    } else {
+                        foreach ($checkedTypes as $userType) {
+                            if ($post['user_type'] != $userType) {
+                                echo "You don't follow this type";
+                            }
+                            if ($post['user_type'] == $userType) {
+                                ?>
 
-                 <?php } 
+                                <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                                    <p class="pt-10 text-3xl">
+                                    <a href="profile.php?user_id=<?php echo $post['user_id'] ?>"><?php echo $post['user_name'] ?></a>
+                                    </p>
+                                    <div class="pt-6 mx-12">
+                                        <div class="bg-black w-96 h-96">
+                                            <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                                        </div>
+                                    </div>
+                                    <p class="pt-6 text-xl">
+                                        <?php echo $post['posts_date'] ?>
+                                    </p>
+                                    <p class="pt-6 text-xl">
+                                        <?php echo $post['posts_description'] ?>
+                                    </p>
+                                    <!-- Include likes button -->
+                                    <?php include('likebutton.php'); ?>
+                                    </form>
+                                </article>
+
+                            <?php }
+                        }
+                    }
                 }
-            }       
-        } 
 
-            ?>
+                ?>
             </div>
         </div>
     </div>
