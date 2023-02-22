@@ -5,12 +5,15 @@ include('connect.php');
 $sqlFollowing = "SELECT followed from followers where follower=$connectedUserId";
 $sqlQuery = $mysqli->query($sqlFollowing);
 $followersData = $sqlQuery->fetch_assoc();
-$userFollowed = $followersData['followed'];
-$post = $sqlQuery->fetch_assoc();
+if (isset($followersData)){
+    $userFollowed = $followersData['followed'];
+    $post = $sqlQuery->fetch_assoc();
 
-$sqlFollowingPosts = "SELECT ID as ID, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed' ";
-$sqlQuery2 = $mysqli->query($sqlFollowingPosts);
-
+    $sqlFollowingPosts = "SELECT posts.ID as ID, posts.photo as posts_photo, posts.date as posts_date, 
+    posts.description as posts_description, posts.user_id as user_id, users.type_id as user_type 
+    FROM posts JOIN users on users.id=posts.user_id WHERE user_id='$userFollowed' ";
+    $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
+}
 
 // Send SQL request to like/unlike post
 include('like.php');
@@ -52,8 +55,12 @@ include('like.php');
             <div id="posts" class="space-y-8">
 
                 <!-- Followed users' posts -->
-                <?php while ($post = $sqlQuery2->fetch_assoc()) {
-                    ?>
+                
+                <?php 
+                // If no animal type is selected
+                if (isset($followersData)){
+                  if(count($checkedTypes) == 0){ 
+                    while ($post = $sqlQuery2->fetch_assoc()) { ?>
                     <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
                         <p>
                             <?php echo $post['posts_date'] ?>
@@ -77,7 +84,48 @@ include('like.php');
                         <?php include('likebutton.php'); ?>
                         </form>
                     </article>
-                <?php } ?>
+                    <?php              
+                    } 
+
+                    // If types are selected
+                }else {
+                    foreach ($checkedTypes as $userType){
+                        if ($post['user_type'] != $userType) {
+                            echo "You don't follow this type";
+                        } 
+                        if ($post['user_type'] == $userType) { 
+                            ?>
+
+                <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
+                        <p>
+                            <?php echo $post['posts_date'] ?>
+                        </p>
+                        <p>
+                            <?php // Get follower's name
+                                $followerId = $post['user_id'];
+                                $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
+                                $sqlQuery3 = $mysqli->query($sqlUserName);
+                                $followerFinalName = $sqlQuery3->fetch_assoc();
+                                echo $followerFinalName['name'] ?>
+                        </p>
+                        <div class="bg-black w-96 h-96">
+                            <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
+                        </div>
+
+                        <p>
+                            <?php echo $post['posts_description'] ?>
+                        </p>
+                        <!-- Include likes button -->
+                        <?php include('likebutton.php'); ?>
+                        </form>
+                    </article>
+
+                 <?php } 
+                }
+            }       
+        } 
+
+            ?>
             </div>
         </div>
     </div>
