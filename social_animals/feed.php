@@ -5,12 +5,13 @@ include('connect.php');
 $sqlFollowing = "SELECT followed from followers where follower=$connectedUserId";
 $sqlQuery = $mysqli->query($sqlFollowing);
 $followersData = $sqlQuery->fetch_assoc();
-$userFollowed = $followersData['followed'];
-$post = $sqlQuery->fetch_assoc();
 
-$sqlFollowingPosts = "SELECT ID as ID, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed' ";
-$sqlQuery2 = $mysqli->query($sqlFollowingPosts);
-
+if (isset($followersData)) {
+    $userFollowed = $followersData['followed'];
+    $post = $sqlQuery->fetch_assoc();
+    $sqlFollowingPosts = "SELECT ID as ID, photo as posts_photo, date as posts_date, description  as posts_description, user_id FROM posts WHERE user_id='$userFollowed' ";
+    $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
+}
 
 // Send SQL request to like/unlike post
 include('like.php');
@@ -42,9 +43,9 @@ include('like.php');
             <div class="">
                 <form action="feed.php" enctype="multipart/form-data" method="post"
                     class="flex flex-col space-y-2 space-x-8 justify-center items-center border-black border-2 bg-lime-50 mt-4">
-                    <label for="user_picture" class="mt-2">Choose a picture</label>
+                    <label for="user_picture" class="mt-2">Share your cutest picture!</label>
                     <input type="file" name="user_picture" />
-                    <p>Add a description</p>
+                    <p>Add a cool description</p>
                     <textarea name="description" id="" cols="30" rows="2"></textarea>
                     <input type="submit" value="Post"
                         class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded">
@@ -53,33 +54,35 @@ include('like.php');
             <div id="posts" class="space-y-8">
 
                 <!-- Followed users' posts -->
-                <?php while ($post = $sqlQuery2->fetch_assoc()) {
-                    ?>
-                    <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24">
-                        <p class="text-3xl pt-10">
-                            <?php // Get follower's name
-                                $followerId = $post['user_id'];
-                                $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
-                                $sqlQuery3 = $mysqli->query($sqlUserName);
-                                $followerFinalName = $sqlQuery3->fetch_assoc();
-                                echo $followerFinalName['name'] ?>
-                        </p>
-                        <div class="pt-6 mx-12">
+                <?php
+                if (isset($followersData)) {
+                    while ($post = $sqlQuery2->fetch_assoc()) {
+                        ?>
+                        <article class="flex flex-col items-center border-black border-2 bg-lime-50 space-x-8 ">
+                            <p>
+                                <?php echo $post['posts_date'] ?>
+                            </p>
+                            <p>
+                                <?php // Get follower's name
+                                        $followerId = $post['user_id'];
+                                        $sqlUserName = "SELECT name FROM users WHERE users.ID = $followerId";
+                                        $sqlQuery3 = $mysqli->query($sqlUserName);
+                                        $followerFinalName = $sqlQuery3->fetch_assoc();
+                                        echo $followerFinalName['name'] ?>
+                            </p>
                             <div class="bg-black w-96 h-96">
                                 <img class="object-cover h-96 w-96" src="<?php echo 'upload/' . $post['posts_photo'] ?>">
                             </div>
-                        </div>
-                        <p class="pt-6 text-xl">
-                            <?php echo $post['posts_date'] ?>
-                        </p>
-                        <p class="pt-6 text-xl">
-                            <?php echo $post['posts_description'] ?>
-                        </p>
-                        <!-- Include likes button -->
-                        <?php include('likebutton.php'); ?>
-                        </form>
-                    </article>
-                <?php } ?>
+
+                            <p>
+                                <?php echo $post['posts_description'] ?>
+                            </p>
+                            <!-- Include likes button -->
+                            <?php include('likebutton.php'); ?>
+                            </form>
+                        </article>
+                    <?php }
+                } ?>
             </div>
         </div>
     </div>
