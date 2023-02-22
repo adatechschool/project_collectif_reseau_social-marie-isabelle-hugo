@@ -26,9 +26,9 @@ if ($hasBeenLiked){ ?>
     <div id="likes" class="flex flex-wrap space-between items-center space-x-20 pt-5">
         <div id="members-liking" class="italic text-xs">You <?php 
             if($otherLikes > 1) {
-                echo 'and' . $otherLikes ?> other animals like this photo
+                echo 'and ' . $otherLikes ?> other animals like this photo
             <?php } elseif ($otherLikes == 1) {
-                echo 'and' . $otherLikes ?> other animal like this photo
+                echo 'and ' . $otherLikes ?> other animal like this photo
             <?php } else { ?>
                 like this photo
             <?php  } ?>
