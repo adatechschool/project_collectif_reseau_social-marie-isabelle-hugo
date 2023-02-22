@@ -111,29 +111,10 @@ include('like.php');
     <?php
     include('header.php');
     ?>
-    <div class="">
-        <div class="">
-            <p>Following</p>
-            <p>
-                <?php
-                while ($follo = $getFollowing->fetch_assoc()) {
-                    echo $follo['user_name'] . ' ';
-                } ?>
-            </p>
-            <p> Followed by</p><p>
-            <?php
-            while ($follo = $getFollowed->fetch_assoc()) {
-                ?>
-                
-                    <?php echo $follo['user_name']; ?>
-                
 
-            <?php } ?></p>
-        </div>
-
-        <div id="pageContent">
+        <div id="pageContent" >
             <div>
-                <main class="flex flex-col">
+                <main class="flex flex-col" >
 
                     <!-- User's informations -->
                     <div id="userDetails" class="flex justify-center items-center space-x-16 py-10">
@@ -171,6 +152,31 @@ include('like.php');
                             } ?>
                         </div>
                     </div>
+                    <div class="">
+                        <div class="flex justify-center items-center space-x-16 " >
+                            <div class="flex flex-col text-xl">
+                            <p>Following</p>
+                            <p>
+                                <?php
+                                while ($follo = $getFollowing->fetch_assoc()) {
+                                    echo $follo['user_name'] . ' ';
+                                } ?>
+                            </p>
+                            </div>
+                            <div class="flex flex-col text-xl">
+                            <p> Followed by</p><p>
+                            <?php
+                            while ($follo = $getFollowed->fetch_assoc()) {
+                                ?>
+                                
+                                    <?php echo $follo['user_name']; ?>
+                                
+
+                            <?php } ?></p>
+                            </div>
+                        </div>
+                    </div>
+                    
 
                     <!-- New post form if user is on their wall -->
                     <?php if ($myWall == true) { ?>
