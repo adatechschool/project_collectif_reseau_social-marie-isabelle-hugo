@@ -2,7 +2,7 @@
 
 // Get all Social Animals posts
 $getPostsRequest = "
-SELECT posts.description, posts.date, posts.photo, posts.id as ID, posts.user_id, users.name as user_name 
+SELECT posts.description, posts.date, posts.photo, posts.id as ID, posts.user_id, users.name as user_name, users.type_id as user_type 
 FROM posts JOIN users ON users.id=posts.user_id";
 $postsInfos = $mysqli->query($getPostsRequest);
 
@@ -39,7 +39,41 @@ include('like.php');
         <div class="flex flex-col w-screen justify-center items-center space-y-8">
             <main>
                 <?php
-                while ($post = $postsInfos->fetch_assoc()) { ?>
+                while ($post = $postsInfos->fetch_assoc()) { 
+
+                    // If no animal type is selected
+                    if(count($checkedTypes) == 0){ ?>
+                        <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
+                        <a class="pt-10">
+                            <address>
+                                <?php
+                                ?><a class="text-3xl" href="profile.php?user_id=<?php echo $post['user_id'] ?>"><?php
+                                   echo $post['user_name']; ?></a>
+                            </address>
+                        </a>
+                        <div class="pt-6 mx-12">
+                            <a class="bg-black w-96 h-96 ">
+                                <img class="object-cover h-96 w-96 " src="upload/<?php echo $post['photo']; ?>">
+                            </a>
+                        </div>
+                        <h3 class="pt-6 text-xl">
+                            <time datetime="Y-m-d\\TH:i:sP">
+                                <?php echo $post['date']; ?>
+                            </time>
+                        </h3>
+                        <div class="pt-6 text-xl">
+                            <p>
+                                <?php echo $post['description']; ?>
+                            </p>
+                        </div>
+                        <?php include('likebutton.php'); ?>
+                    </article>
+                    <?php 
+
+                    // If types are selected
+                    } else { foreach ($checkedTypes as $userType){
+                        if ($post['user_type'] == $userType) {
+                    ?>
                     <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
                         <a class="pt-10">
                             <address>
@@ -65,7 +99,10 @@ include('like.php');
                         </div>
                         <?php include('likebutton.php'); ?>
                     </article>
-                <?php } ?>
+                <?php } 
+                }
+            }        
+            }            ?>
             </main>
         </div>
     </div>
