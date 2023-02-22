@@ -23,7 +23,7 @@ $actualPageUrl = "http://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 
 if ($hasBeenLiked){ ?>
-    <div id="likes" class="flex flex-wrap space-between items-center space-x-20 py-5">
+    <div id="likes" class="flex flex-wrap space-between items-center space-x-20 pt-5">
         <div id="members-liking" class="italic text-xs">You <?php 
             if($otherLikes > 1) {
                 echo 'and' . $otherLikes ?> other animals like this photo
@@ -36,12 +36,12 @@ if ($hasBeenLiked){ ?>
         <form method="post" action='<?php echo $actualPageUrl ?>'>
             <input type="hidden" name="getPostId" value='<?php echo $postId ?>'>
             <input type="submit" name="unlike" value="♥ <?php echo $postLikes['like_number']; ?>"
-            class="font-extrabold cursor-pointer hover:text-lg">
+            class="font-extrabold cursor-pointer hover:text-orange-600">
         </form>
     </div>
 
 <?php } else { ?>
-    <div id="likes" class="flex flex-wrap space-between items-center space-x-20 py-5">
+    <div id="likes" class="flex flex-wrap space-between items-center space-x-20 pt-5">
         <div id="members-liking" class="italic text-xs">
             <?php if($totalLikes > 1) {
                 echo $totalLikes ?> animals like this photo
@@ -52,7 +52,7 @@ if ($hasBeenLiked){ ?>
         <form method="post" action='<?php echo $actualPageUrl ?>'>
             <input type="hidden" name="getPostId" value='<?php echo $postId ?>'>
             <input type="submit" name="like" value="♥ <?php echo $postLikes['like_number']; ?>"
-            class="cursor-pointer hover:text-lg">
+            class="cursor-pointer hover:text-orange-600">
         </form>
     </div>
 <?php } ?>

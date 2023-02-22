@@ -82,6 +82,9 @@ if (isset($_POST['unfollow'])) {
     $alreadyFollowed = true;
 }
 
+// Send SQL request to like/unlike post
+include('like.php');
+
 ?>
 
 
@@ -214,6 +217,8 @@ if (isset($_POST['unfollow'])) {
                                 <p>
                                     <?php echo $post['description']; ?>
                                 </p>
+                                <!-- Include likes button -->
+                                <?php include('likebutton.php'); ?>
                             </div>
 
                         </article>
