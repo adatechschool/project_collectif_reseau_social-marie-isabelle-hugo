@@ -2,10 +2,10 @@
 -- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
--- Hôte : 127.0.0.1:3306
--- Généré le : mar. 21 fév. 2023 à 09:08
--- Version du serveur : 8.0.31
--- Version de PHP : 8.0.26
+-- Hôte : localhost:8889
+-- Généré le : jeu. 23 fév. 2023 à 09:19
+-- Version du serveur : 5.7.39
+-- Version de PHP : 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -27,14 +27,21 @@ SET time_zone = "+00:00";
 -- Structure de la table `events`
 --
 
-DROP TABLE IF EXISTS `events`;
-CREATE TABLE IF NOT EXISTS `events` (
-  `ID` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `events` (
+  `ID` int(11) NOT NULL,
   `date` date NOT NULL,
   `place` varchar(250) NOT NULL,
-  `name` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ;
+  `name` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `events`
+--
+
+INSERT INTO `events` (`ID`, `date`, `place`, `name`) VALUES
+(1, '2023-02-24', 'Saint-Martin ballad', 'Dog walk'),
+(2, '2023-02-27', 'Montessori room', 'Cats Meet-up'),
+(3, '2023-03-09', 'Porte de Versailles', 'Master Dev France');
 
 -- --------------------------------------------------------
 
@@ -42,13 +49,24 @@ CREATE TABLE IF NOT EXISTS `events` (
 -- Structure de la table `event_attendees`
 --
 
-DROP TABLE IF EXISTS `event_attendees`;
-CREATE TABLE IF NOT EXISTS `event_attendees` (
-  `user_id` int NOT NULL,
-  `event_id` int NOT NULL,
-  KEY `user_id` (`user_id`),
-  KEY `event_id` (`event_id`)
-) ;
+CREATE TABLE `event_attendees` (
+  `user_id` int(11) NOT NULL,
+  `event_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `event_attendees`
+--
+
+INSERT INTO `event_attendees` (`user_id`, `event_id`) VALUES
+(4, 1),
+(4, 2),
+(4, 3),
+(6, 2),
+(6, 1),
+(10, 3),
+(5, 2),
+(7, 3);
 
 -- --------------------------------------------------------
 
@@ -56,13 +74,10 @@ CREATE TABLE IF NOT EXISTS `event_attendees` (
 -- Structure de la table `followers`
 --
 
-DROP TABLE IF EXISTS `followers`;
-CREATE TABLE IF NOT EXISTS `followers` (
-  `follower` int NOT NULL,
-  `followed` int NOT NULL,
-  KEY `follower` (`follower`),
-  KEY `following` (`followed`)
-) ;
+CREATE TABLE `followers` (
+  `follower` int(11) NOT NULL,
+  `followed` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `followers`
@@ -70,7 +85,20 @@ CREATE TABLE IF NOT EXISTS `followers` (
 
 INSERT INTO `followers` (`follower`, `followed`) VALUES
 (3, 1),
-(1, 3);
+(1, 3),
+(3, 5),
+(7, 3),
+(7, 1),
+(4, 1),
+(6, 1),
+(6, 3),
+(1, 6),
+(10, 1),
+(4, 3),
+(4, 6),
+(9, 6),
+(5, 6),
+(7, 9);
 
 -- --------------------------------------------------------
 
@@ -78,13 +106,33 @@ INSERT INTO `followers` (`follower`, `followed`) VALUES
 -- Structure de la table `likes`
 --
 
-DROP TABLE IF EXISTS `likes`;
-CREATE TABLE IF NOT EXISTS `likes` (
-  `user_id` int NOT NULL,
-  `post_id` int NOT NULL,
-  KEY `user_id` (`user_id`),
-  KEY `post_id` (`post_id`)
-) ;
+CREATE TABLE `likes` (
+  `user_id` int(11) NOT NULL,
+  `post_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `likes`
+--
+
+INSERT INTO `likes` (`user_id`, `post_id`) VALUES
+(4, 1),
+(4, 14),
+(10, 3),
+(4, 6),
+(4, 7),
+(4, 13),
+(4, 3),
+(9, 19),
+(10, 21),
+(10, 1),
+(10, 6),
+(10, 18),
+(10, 19),
+(5, 18),
+(7, 18),
+(7, 20),
+(7, 22);
 
 -- --------------------------------------------------------
 
@@ -92,16 +140,13 @@ CREATE TABLE IF NOT EXISTS `likes` (
 -- Structure de la table `posts`
 --
 
-DROP TABLE IF EXISTS `posts`;
-CREATE TABLE IF NOT EXISTS `posts` (
-  `ID` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `posts` (
+  `ID` int(11) NOT NULL,
   `photo` varchar(50) NOT NULL,
   `description` varchar(250) DEFAULT NULL,
   `date` date NOT NULL,
-  `user_id` int DEFAULT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `user_id` (`user_id`)
-) ;
+  `user_id` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `posts`
@@ -109,9 +154,14 @@ CREATE TABLE IF NOT EXISTS `posts` (
 
 INSERT INTO `posts` (`ID`, `photo`, `description`, `date`, `user_id`) VALUES
 (1, '63f486010690b5.07993780.jpg', 'Did you know that I am a movie star ?', '2023-02-20', 1),
-(6, '63f48795628ce7.37151080.png', 'Wanna swim?', '2023-02-20', 3),
 (3, '63f48620a841b4.55182163.png', 'I was such a widdle cutie puppy!', '2023-02-21', 1),
-(7, '63f4878cb97b83.64015646.jpg', 'Look, I am a cat', '2023-02-20', 3);
+(6, '63f48795628ce7.37151080.png', 'Wanna swim?', '2023-02-20', 3),
+(7, '63f4878cb97b83.64015646.jpg', 'Look, I am a cat', '2023-02-20', 3),
+(18, '63f72d73982ae1.84303152.jpeg', 'sooo cool!', '2023-02-23', 6),
+(19, '63f72da5c0a3a8.48851549.jpeg', 'tssssssss', '2023-02-23', 9),
+(20, '63f72dd8191672.32322046.jpeg', 'Look at my cousin from Dallas museum :)', '2023-02-23', 8),
+(21, '63f72e2a1d19a5.31531237.jpeg', 'I gotta a famous mate! ', '2023-02-23', 10),
+(22, '63f72ed88afbe2.40763499.jpeg', 'Always my mentor', '2023-02-23', 5);
 
 -- --------------------------------------------------------
 
@@ -119,12 +169,10 @@ INSERT INTO `posts` (`ID`, `photo`, `description`, `date`, `user_id`) VALUES
 -- Structure de la table `type`
 --
 
-DROP TABLE IF EXISTS `type`;
-CREATE TABLE IF NOT EXISTS `type` (
-  `ID` int NOT NULL AUTO_INCREMENT,
-  `label` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`)
-) ;
+CREATE TABLE `type` (
+  `ID` int(11) NOT NULL,
+  `label` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `type`
@@ -146,17 +194,14 @@ INSERT INTO `type` (`ID`, `label`) VALUES
 -- Structure de la table `users`
 --
 
-DROP TABLE IF EXISTS `users`;
-CREATE TABLE IF NOT EXISTS `users` (
-  `ID` int NOT NULL AUTO_INCREMENT,
+CREATE TABLE `users` (
+  `ID` int(11) NOT NULL,
   `name` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(100) NOT NULL,
-  `type_id` int NOT NULL,
-  `photo` varchar(50) NOT NULL,
-  PRIMARY KEY (`ID`),
-  KEY `type_id` (`type_id`)
-) ;
+  `type_id` int(11) NOT NULL,
+  `photo` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `users`
@@ -173,6 +218,85 @@ INSERT INTO `users` (`ID`, `name`, `email`, `password`, `type_id`, `photo`) VALU
 (8, 'Birdie', 'birdie@mail.com', 'fb26e8598ca3bfa4114ebd0b4f689425cebcac6588b458d97103be8c734ec9a0', 6, '63f398279d84f8.76663395.png'),
 (9, 'Python', 'python@mail.com', '11a4a60b518bf24989d481468076e5d5982884626aed9faeb35b8576fcd223e1', 7, '63f3984ff1a421.35362877.png'),
 (10, 'Dragon', 'dragon@mail.com', 'a9c43be948c5cabd56ef2bacffb77cdaa5eec49dd5eb0cc4129cf3eda5f0e74c', 8, '63f398c50228d5.42039428.png');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `events`
+--
+ALTER TABLE `events`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `event_attendees`
+--
+ALTER TABLE `event_attendees`
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `event_id` (`event_id`);
+
+--
+-- Index pour la table `followers`
+--
+ALTER TABLE `followers`
+  ADD KEY `follower` (`follower`),
+  ADD KEY `following` (`followed`);
+
+--
+-- Index pour la table `likes`
+--
+ALTER TABLE `likes`
+  ADD KEY `user_id` (`user_id`),
+  ADD KEY `post_id` (`post_id`);
+
+--
+-- Index pour la table `posts`
+--
+ALTER TABLE `posts`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `type`
+--
+ALTER TABLE `type`
+  ADD PRIMARY KEY (`ID`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`ID`),
+  ADD KEY `type_id` (`type_id`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `events`
+--
+ALTER TABLE `events`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT pour la table `posts`
+--
+ALTER TABLE `posts`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+
+--
+-- AUTO_INCREMENT pour la table `type`
+--
+ALTER TABLE `type`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
