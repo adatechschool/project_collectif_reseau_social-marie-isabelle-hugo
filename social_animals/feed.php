@@ -2,17 +2,17 @@
 include('connect.php');
 
 // Get followed users' posts
-$sqlFollowing = "SELECT followed from followers where follower=$connectedUserId";
-$sqlQuery = $mysqli->query($sqlFollowing);
-$followersData = $sqlQuery->fetch_assoc();
+$usersFollowedRequest = "SELECT followed from followers where follower=$connectedUserId";
+$getUsersFollowed = $mysqli->query($usersFollowedRequest);
+$followersData = $getUsersFollowed->fetch_assoc();
 if (isset($followersData)){
     $userFollowed = $followersData['followed'];
-    $post = $sqlQuery->fetch_assoc();
+    $post = $getUsersFollowed->fetch_assoc();
 
-    $sqlFollowingPosts = "SELECT posts.ID as ID, posts.photo as posts_photo, posts.date as posts_date, 
+    $usersFollowedRequestPosts = "SELECT posts.ID as ID, posts.photo as posts_photo, posts.date as posts_date, 
     posts.description as posts_description, posts.user_id as user_id, users.type_id as user_type 
     FROM posts JOIN users on users.id=posts.user_id WHERE user_id='$userFollowed' ";
-    $sqlQuery2 = $mysqli->query($sqlFollowingPosts);
+    $sqlQuery2 = $mysqli->query($usersFollowedRequestPosts);
 }
 
 // Send SQL request to like/unlike post
@@ -57,10 +57,12 @@ include('like.php');
                 <!-- Followed users' posts -->
                 
                 <?php 
+                
                 // If no animal type is selected
                 if (isset($followersData)){
                   if(count($checkedTypes) == 0){ 
-                    while ($post = $sqlQuery2->fetch_assoc()) { ?>
+                    while ($post = $sqlQuery2->fetch_assoc()) { 
+                        ?>
                     <article class="flex flex-col items-center bg-orange-100 mt-20 rounded-lg mx-80 pb-24 ">
                         <p class="pt-10 text-3xl">
                             <?php // Get follower's name
