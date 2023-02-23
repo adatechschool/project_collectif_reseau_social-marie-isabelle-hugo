@@ -120,7 +120,7 @@ include('like.php');
             
             // if the requested type(s) doesn't match the available posts
             if (count($existsTable) == 0) { ?>
-                <div class='italic'> Sorry, these animals haven't posted pictures yet</div>
+                <!-- <div class='italic'> Sorry, these animals haven't posted pictures yet</div> -->
             <?php }?>
             </main>
         </div>

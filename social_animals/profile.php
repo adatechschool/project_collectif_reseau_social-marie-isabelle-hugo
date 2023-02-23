@@ -190,7 +190,7 @@ include('like.php');
                                     cutest picture!</label>
                                 <input type="file" name="user_picture" />
                                 <textarea name="description" id="" cols="30" rows="2" class="mt-4 rounded-lg text-grey"
-                                    placeholder="Add a cool description""></textarea>
+                                    placeholder="Add a cool description"></textarea>
                                                                     <input type=" submit" value="Post"
                                     class="bg-orange-300 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4">
                                                             </form>
